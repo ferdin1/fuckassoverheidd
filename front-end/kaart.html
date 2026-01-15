@@ -428,106 +428,51 @@
                         <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${f.opleiding} | ${f.benodigd ? f.benodigd.substring(0, 50) : ''}...</div>
                         <a href="functies.html?id=${pin.functionId}" class="popup-btn">Bekijk Functie</a>
                 `;
+     <!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="auth.js"></script>
 
-                if (isAdmin) {
-                    // Use database ID if available, otherwise array index
-                    const pinId = pin.id || index;
-                    const isDbId = !!pin.id;
-                    popupContent += `<button class="delete-pin-btn" onclick="deletePin(${index}, ${pin.id || 'null'})">Verwijder Pin</button>`;
-                }
+<script>
+    // === JOUW RIJKSORGANISATIES ===
+    const mapPins = [
+        { lat: 53.2194, lng: 6.5665, title: "Belastingdienst Groningen", description: "Financiële diensten | MBO/HBO", link: "#" },
+        { lat: 53.2000, lng: 6.1500, title: "DUO Groningen", description: "Onderwijs | HBO/WO", link: "#" },
+        { lat: 53.1000, lng: 6.0000, title: "CJIB Groningen", description: "Justitie | MBO/HBO", link: "#" }
+    ];
 
-                popupContent += `</div>`;
+    // === KAART ===
+    const map = L.map('map').setView([53.1, 6.5], 9);
 
-                // Use custom styling class if possible (Leaflet quirk)
-                marker.bindPopup(popupContent, { className: 'custom-popup' });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
 
-                markers.push(marker);
-            });
-        }
+    let markers = [];
 
-        // Edit Mode Toggle
-        document.getElementById('editModeToggle').addEventListener('change', (e) => {
-            isEditMode = e.target.checked;
-            document.body.classList.toggle('edit-mode', isEditMode);
-            if (isEditMode) {
-                showToast("Klik op de kaart om een pin te plaatsen");
-            }
+    function renderPins() {
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        mapPins.forEach(pin => {
+            const marker = L.marker([pin.lat, pin.lng]).addTo(map);
+            const popupContent = `
+                <div class="popup-header">${pin.title}</div>
+                <div class="popup-body">
+                    <div style="font-size: 12px; color: #666;">${pin.description}</div>
+                    <a href="${pin.link}" class="popup-btn">Bekijk Functies</a>
+                </div>
+            `;
+            marker.bindPopup(popupContent, { className: 'custom-popup' });
+            markers.push(marker);
         });
+    }
 
-        // Map Click Handler (Add Pin)
-        map.on('click', (e) => {
-            if (!isEditMode || !isAdmin) return;
+    renderPins();
+</script>
 
-            tempLatLng = e.latlng;
-            openModal();
-        });
-
-        // Modal Logic
-        const modal = document.getElementById('addPinModal');
-        const select = document.getElementById('functionSelect');
-
-        function openModal() {
-            // Populate select
-            select.innerHTML = '<option value="">-- Kies een functie --</option>';
-            Object.keys(functionsData).forEach(id => {
-                const f = functionsData[id];
-                const option = document.createElement('option');
-                option.value = id;
-                option.textContent = f.titel;
-                select.appendChild(option);
-            });
-            modal.style.display = 'flex';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            tempLatLng = null;
-        }
-
-        async function savePin() {
-            const functionId = select.value;
-            if (!functionId) {
-                alert("Kies een functie!");
-                return;
-            }
-
-            const newPin = {
-                lat: tempLatLng.lat,
-                lng: tempLatLng.lng,
-                functionId: functionId
-            };
-
-            await savePinToDB(newPin);
-            mapPins.push(newPin);
-
-            renderPins();
-            closeModal();
-            showToast("Pin toegevoegd!");
-        }
-
-        // Global Delete Function (needs to be on window for popup onclick)
-        window.deletePin = async function (index, dbId) {
-            if (confirm("Weet je zeker dat je deze pin wilt verwijderen?")) {
-                if (dbId) {
-                    await deletePinFromDB(dbId);
-                }
-                mapPins.splice(index, 1);
-                renderPins();
-                showToast("Pin verwijderd!");
-            }
-        };
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 3000);
-        }
-
-        // Initial Render
-        loadInitialData();
-
-    </script>
 </body>
 
 </html>
