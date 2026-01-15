@@ -357,9 +357,9 @@
                 renderPins();
             } catch (err) {
                 console.error("Data kon niet worden geladen:", err);
-                // Fallback naar localStorage voor demo doeleinden
+                // Fallback naar defaultPins
+                mapPins = defaultPins;
                 functionsData = JSON.parse(localStorage.getItem('cjib_functies')) || {};
-                mapPins = JSON.parse(localStorage.getItem('cjib_map_pins')) || [];
                 renderPins();
             }
         }
@@ -388,6 +388,24 @@
         }
         // ---------------------------------------------------
 
+        // Default pins als fallback
+        const defaultPins = [
+            { lat: 53.2194, lng: 6.5665, title: "CJIB Groningen", description: "Justitieel Incasso | MBO/HBO", link: "#" },
+            { lat: 53.1000, lng: 6.0000, title: "Justid Groningen", description: "Justitiële diensten | HBO", link: "#" },
+            { lat: 53.0500, lng: 5.8000, title: "Rechtbank Noord-NL", description: "Rechtspraak | HBO/WO", link: "#" },
+            { lat: 52.9500, lng: 6.4000, title: "Gerechtshof Arnhem", description: "Hoger beroep | WO", link: "#" },
+            { lat: 53.0000, lng: 6.5660, title: "DJI Veenhuizen", description: "Justitiële Inrichtingen | MBO/HBO", link: "#" },
+            { lat: 53.2194, lng: 6.5680, title: "Belastingdienst GR", description: "Belastingheffing | MBO/HBO", link: "#" },
+            { lat: 53.3800, lng: 6.2200, title: "Douane Groningen", description: "Douane & Accijns | MBO", link: "#" },
+            { lat: 53.2000, lng: 6.1500, title: "RWS Groningen", description: "Infrastructuur | MBO/HBO", link: "#" },
+            { lat: 53.0500, lng: 6.5700, title: "RDW Groningen", description: "Voertuigregistratie | MBO/HBO", link: "#" },
+            { lat: 53.0000, lng: 6.1000, title: "IND Groningen", description: "Immigratie | HBO", link: "#" },
+            { lat: 53.2000, lng: 6.1520, title: "DUO Groningen", description: "Onderwijsuitvoering | HBO/WO", link: "#" },
+            { lat: 53.2100, lng: 6.1600, title: "IMG Groningen", description: "Immigratie diensten | HBO", link: "#" },
+            { lat: 53.2200, lng: 6.5700, title: "RVO Groningen", description: "Ondernemend NL | HBO", link: "#" },
+            { lat: 53.2100, lng: 6.5600, title: "NCG Groningen", description: "Noordelijke Ontwikkeling | HBO/WO", link: "#" }
+        ];
+
         // Init Map (Focus on North Netherlands)
         const map = L.map('map').setView([53.1, 6.5], 9); // Groningen/Friesland/Drenthe area
 
@@ -414,64 +432,94 @@
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
-            mapPins.forEach((pin, index) => {
-                const f = functionsData[pin.functionId];
-                if (!f) return; // Skip if function deleted
-
+            mapPins.forEach((pin) => {
                 // Create Marker
                 const marker = L.marker([pin.lat, pin.lng]).addTo(map);
 
                 // Popup Content
                 let popupContent = `
-                    <div class="popup-header">${f.titel}</div>
+                    <div class="popup-header">${pin.title}</div>
                     <div class="popup-body">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${f.opleiding} | ${f.benodigd ? f.benodigd.substring(0, 50) : ''}...</div>
-                        <a href="functies.html?id=${pin.functionId}" class="popup-btn">Bekijk Functie</a>
+                        <div style="font-size: 12px; color: #666;">${pin.description}</div>
+                        <a href="${pin.link}" class="popup-btn">Bekijk Functies</a>
+                    </div>
                 `;
-     <!-- Scripts -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="auth.js"></script>
 
-<script>
-    // === JOUW RIJKSORGANISATIES ===
-    const mapPins = [
-        { lat: 53.2194, lng: 6.5665, title: "Belastingdienst Groningen", description: "Financiële diensten | MBO/HBO", link: "#" },
-        { lat: 53.2000, lng: 6.1500, title: "DUO Groningen", description: "Onderwijs | HBO/WO", link: "#" },
-        { lat: 53.1000, lng: 6.0000, title: "CJIB Groningen", description: "Justitie | MBO/HBO", link: "#" }
-    ];
+                marker.bindPopup(popupContent, { className: 'custom-popup' });
 
-    // === KAART ===
-    const map = L.map('map').setView([53.1, 6.5], 9);
+                // CLICK TO OPEN
+                marker.on('click', function() {
+                    this.openPopup();
+                });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap contributors © CARTO',
-        subdomains: 'abcd',
-        maxZoom: 19
-    }).addTo(map);
+                markers.push(marker);
+            });
+        }
 
-    let markers = [];
+        // Modal Functions
+        function closeModal() {
+            document.getElementById('addPinModal').style.display = 'none';
+        }
 
-    function renderPins() {
-        markers.forEach(m => map.removeLayer(m));
-        markers = [];
+        function savePin() {
+            const functionSelect = document.getElementById('functionSelect');
+            const functionId = functionSelect.value;
+            const functionName = functionSelect.options[functionSelect.selectedIndex].text;
+            
+            if (!tempLatLng) {
+                alert('Selecteer eerst een locatie op de kaart');
+                return;
+            }
 
-        mapPins.forEach(pin => {
-            const marker = L.marker([pin.lat, pin.lng]).addTo(map);
-            const popupContent = `
-                <div class="popup-header">${pin.title}</div>
-                <div class="popup-body">
-                    <div style="font-size: 12px; color: #666;">${pin.description}</div>
-                    <a href="${pin.link}" class="popup-btn">Bekijk Functies</a>
-                </div>
-            `;
-            marker.bindPopup(popupContent, { className: 'custom-popup' });
-            markers.push(marker);
+            const newPin = {
+                lat: tempLatLng.lat,
+                lng: tempLatLng.lng,
+                title: functionName,
+                description: 'Rijksoverheid functie',
+                link: '#',
+                functionId: functionId
+            };
+
+            savePinToDB(newPin).then(result => {
+                mapPins.push(result);
+                renderPins();
+                closeModal();
+                document.getElementById('toast').style.display = 'block';
+                setTimeout(() => document.getElementById('toast').style.display = 'none', 3000);
+            });
+        }
+
+        // Edit Mode Toggle
+        document.getElementById('editModeToggle').addEventListener('change', function() {
+            isEditMode = this.checked;
+            document.body.classList.toggle('edit-mode', isEditMode);
         });
-    }
 
-    renderPins();
-</script>
+        // Map Click Handler for Edit Mode
+        map.on('click', function(e) {
+            if (isEditMode) {
+                tempLatLng = e.latlng;
+                document.getElementById('addPinModal').style.display = 'flex';
+            }
+        });
+
+        // Populate Function Select
+        function populateFunctionSelect() {
+            const select = document.getElementById('functionSelect');
+            Object.entries(functionsData).forEach(([id, func]) => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.text = func.titel || func.name || func;
+                select.appendChild(option);
+            });
+        }
+
+        // Initialize
+        loadInitialData().then(() => {
+            populateFunctionSelect();
+            renderPins();
+        });
+    </script>
 
 </body>
 
