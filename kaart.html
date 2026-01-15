@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaart van Noord-Nederland - Rijksoverheid</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #154273;
+            --secondary: #a90061;
+            --text: #333;
+            --bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .top-bar {
+            background: var(--primary);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            /* Above map */
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ADMIN CONTROLS */
+        .admin-controls {
+            display: none;
+            /* Hidden by default */
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .admin-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--secondary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(14px);
+        }
+
+        /* MAP */
+        #map {
+            flex: 1;
+            width: 100%;
+            z-index: 1;
+            cursor: default;
+        }
+
+        .edit-mode #map {
+            cursor: crosshair;
+        }
+
+        /* POPUP STYLES */
+        .custom-popup .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-popup .leaflet-popup-content {
+            margin: 0;
+            width: 200px !important;
+        }
+
+        .popup-header {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .popup-body {
+            padding: 15px;
+            background: white;
+        }
+
+        .popup-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 8px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .popup-btn:hover {
+            background: #0d2a4a;
+        }
+
+        .delete-pin-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .delete-pin-btn:hover {
+            background: #c0392b;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 25px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-confirm {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #eee;
+            color: #333;
+        }
+
+        /* Alert */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            display: none;
+            z-index: 3000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="logo-area">
+            <div>📍 Map Noord-Nederland</div>
+            <div class="admin-controls" id="adminControls">
+                <label class="admin-toggle">
+                    <div class="switch">
+                        <input type="checkbox" id="editModeToggle">
+                        <span class="slider"></span>
+                    </div>
+                    <span>Bewerk Modus</span>
+                </label>
+            </div>
+        </div>
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">← Terug naar Dashboard</button>
+    </div>
+
+    <!-- MAP CONTAINER -->
+    <div id="map"></div>
+
+    <!-- MODAL FOR ADDING PIN -->
+    <div id="addPinModal" class="modal">
+        <div class="modal-content">
+            <h2>Nieuwe Pin Toevoegen</h2>
+            <div class="form-group">
+                <label>Selecteer Functie:</label>
+                <select id="functionSelect">
+                    <!-- Options populated by JS -->
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closeModal()">Annuleren</button>
+                <button class="btn btn-confirm" onclick="savePin()">Pin Plaatsen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Pin succesvol toegevoegd!</div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="auth.js"></script>
+
+    <script>
+        // --- DATA LAYER (Future MySQL Integration Point) ---
+        // Functies: In a real app this would fetch from 'api/functions'
+        const functionsData = JSON.parse(localStorage.getItem('cjib_functies')) || {};
+
+        // Pins: In a real app this would fetch from 'api/pins'
+        let mapPins = JSON.parse(localStorage.getItem('cjib_map_pins')) || [];
+
+        function savePinsData() {
+            // Future: Replace with fetch('/api/pins', { method: 'POST', body: ... })
+            localStorage.setItem('cjib_map_pins', JSON.stringify(mapPins));
+        }
+        // ---------------------------------------------------
+
+        // Init Map (Focus on North Netherlands)
+        const map = L.map('map').setView([53.1, 6.5], 9); // Groningen/Friesland/Drenthe area
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // State
+        let isEditMode = false;
+        let tempLatLng = null;
+        let markers = [];
+
+        // Auth Check for Admin Controls
+        const isAdmin = typeof Auth !== 'undefined' && Auth.isAdmin();
+        if (isAdmin) {
+            document.getElementById('adminControls').style.display = 'flex';
+        }
+
+        // Render Markers
+        function renderPins() {
+            // Clear existing
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            mapPins.forEach((pin, index) => {
+                const f = functionsData[pin.functionId];
+                if (!f) return; // Skip if function deleted
+
+                // Create Marker
+                const marker = L.marker([pin.lat, pin.lng]).addTo(map);
+
+                // Popup Content
+                let popupContent = `
+                    <div class="popup-header">${f.titel}</div>
+                    <div class="popup-body">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${f.opleiding} | ${f.benodigd.substring(0, 50)}...</div>
+                        <a href="functies.html?id=${pin.functionId}" class="popup-btn">Bekijk Functie</a>
+                `;
+
+                if (isAdmin) {
+                    popupContent += `<button class="delete-pin-btn" onclick="deletePin(${index})">Verwijder Pin</button>`;
+                }
+
+                popupContent += `</div>`;
+
+                // Use custom styling class if possible (Leaflet quirk)
+                marker.bindPopup(popupContent, { className: 'custom-popup' });
+
+                markers.push(marker);
+            });
+        }
+
+        // Edit Mode Toggle
+        document.getElementById('editModeToggle').addEventListener('change', (e) => {
+            isEditMode = e.target.checked;
+            document.body.classList.toggle('edit-mode', isEditMode);
+            if (isEditMode) {
+                showToast("Klik op de kaart om een pin te plaatsen");
+            }
+        });
+
+        // Map Click Handler (Add Pin)
+        map.on('click', (e) => {
+            if (!isEditMode || !isAdmin) return;
+
+            tempLatLng = e.latlng;
+            openModal();
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('addPinModal');
+        const select = document.getElementById('functionSelect');
+
+        function openModal() {
+            // Populate select
+            select.innerHTML = '<option value="">-- Kies een functie --</option>';
+            Object.keys(functionsData).forEach(id => {
+                const f = functionsData[id];
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = f.titel;
+                select.appendChild(option);
+            });
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            tempLatLng = null;
+        }
+
+        function savePin() {
+            const functionId = select.value;
+            if (!functionId) {
+                alert("Kies een functie!");
+                return;
+            }
+
+            mapPins.push({
+                lat: tempLatLng.lat,
+                lng: tempLatLng.lng,
+                functionId: functionId
+            });
+
+            savePinsData();
+            renderPins();
+            closeModal();
+            showToast("Pin toegevoegd!");
+        }
+
+        // Global Delete Function (needs to be on window for popup onclick)
+        window.deletePin = function (index) {
+            if (confirm("Weet je zeker dat je deze pin wilt verwijderen?")) {
+                mapPins.splice(index, 1);
+                savePinsData();
+                renderPins();
+            }
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        // Initial Render
+        renderPins();
+
+    </script>
+</body>
+
+</html>
