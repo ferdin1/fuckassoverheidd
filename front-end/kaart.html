@@ -407,13 +407,21 @@
         ];
 
         // Init Map (Focus on North Netherlands)
-        const map = L.map('map').setView([53.1, 6.5], 9); // Groningen/Friesland/Drenthe area
+        const map = L.map('map', {
+            minZoom: 9,
+            maxZoom: 18
+        }).setView([53.1, 6.5], 9); // Groningen/Friesland/Drenthe area
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 19
         }).addTo(map);
+
+        // Restrict map to North Netherlands only
+        const northBounds = L.latLngBounds([52.8, 3.5], [53.7, 7.2]);
+        map.setMaxBounds(northBounds);
+        map.fitBounds(northBounds);
 
         // State
         let isEditMode = false;
