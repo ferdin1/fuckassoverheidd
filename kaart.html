@@ -339,16 +339,52 @@
     <script src="auth.js"></script>
 
     <script>
-        // --- DATA LAYER (Future MySQL Integration Point) ---
-        // Functies: In a real app this would fetch from 'api/functions'
-        const functionsData = JSON.parse(localStorage.getItem('cjib_functies')) || {};
+        // --- DATA LAYER (MySQL PHP API Integration) ---
+        const API_URL = 'api';
+        let functionsData = {};
+        let mapPins = [];
 
-        // Pins: In a real app this would fetch from 'api/pins'
-        let mapPins = JSON.parse(localStorage.getItem('cjib_map_pins')) || [];
+        async function loadInitialData() {
+            try {
+                // Fetch Functions
+                const fRes = await fetch(`${API_URL}/functies.php`);
+                functionsData = await fRes.json();
 
-        function savePinsData() {
-            // Future: Replace with fetch('/api/pins', { method: 'POST', body: ... })
-            localStorage.setItem('cjib_map_pins', JSON.stringify(mapPins));
+                // Fetch Pins
+                const pRes = await fetch(`${API_URL}/pins.php`);
+                mapPins = await pRes.json();
+
+                renderPins();
+            } catch (err) {
+                console.error("Data kon niet worden geladen:", err);
+                // Fallback naar localStorage voor demo doeleinden
+                functionsData = JSON.parse(localStorage.getItem('cjib_functies')) || {};
+                mapPins = JSON.parse(localStorage.getItem('cjib_map_pins')) || [];
+                renderPins();
+            }
+        }
+
+        async function savePinToDB(pin) {
+            try {
+                const res = await fetch(`${API_URL}/pins.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pin)
+                });
+                const data = await res.json();
+                pin.id = data.id; // Store DB id
+                return data;
+            } catch (err) {
+                console.error("Pin kon niet worden opgeslagen:", err);
+            }
+        }
+
+        async function deletePinFromDB(id) {
+            try {
+                await fetch(`${API_URL}/pins.php?id=${id}`, { method: 'DELETE' });
+            } catch (err) {
+                console.error("Pin kon niet worden verwijderd:", err);
+            }
         }
         // ---------------------------------------------------
 
@@ -389,12 +425,15 @@
                 let popupContent = `
                     <div class="popup-header">${f.titel}</div>
                     <div class="popup-body">
-                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${f.opleiding} | ${f.benodigd.substring(0, 50)}...</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${f.opleiding} | ${f.benodigd ? f.benodigd.substring(0, 50) : ''}...</div>
                         <a href="functies.html?id=${pin.functionId}" class="popup-btn">Bekijk Functie</a>
                 `;
 
                 if (isAdmin) {
-                    popupContent += `<button class="delete-pin-btn" onclick="deletePin(${index})">Verwijder Pin</button>`;
+                    // Use database ID if available, otherwise array index
+                    const pinId = pin.id || index;
+                    const isDbId = !!pin.id;
+                    popupContent += `<button class="delete-pin-btn" onclick="deletePin(${index}, ${pin.id || 'null'})">Verwijder Pin</button>`;
                 }
 
                 popupContent += `</div>`;
@@ -445,31 +484,36 @@
             tempLatLng = null;
         }
 
-        function savePin() {
+        async function savePin() {
             const functionId = select.value;
             if (!functionId) {
                 alert("Kies een functie!");
                 return;
             }
 
-            mapPins.push({
+            const newPin = {
                 lat: tempLatLng.lat,
                 lng: tempLatLng.lng,
                 functionId: functionId
-            });
+            };
 
-            savePinsData();
+            await savePinToDB(newPin);
+            mapPins.push(newPin);
+
             renderPins();
             closeModal();
             showToast("Pin toegevoegd!");
         }
 
         // Global Delete Function (needs to be on window for popup onclick)
-        window.deletePin = function (index) {
+        window.deletePin = async function (index, dbId) {
             if (confirm("Weet je zeker dat je deze pin wilt verwijderen?")) {
+                if (dbId) {
+                    await deletePinFromDB(dbId);
+                }
                 mapPins.splice(index, 1);
-                savePinsData();
                 renderPins();
+                showToast("Pin verwijderd!");
             }
         };
 
@@ -481,7 +525,7 @@
         }
 
         // Initial Render
-        renderPins();
+        loadInitialData();
 
     </script>
 </body>

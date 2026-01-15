@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen / Registreren - Rijksoverheid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #154273;
+            --secondary: #a90061;
+            --text: #333;
+            --bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            width: 400px;
+            border-top: 6px solid var(--primary);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .msg {
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+        }
+
+        .success-msg {
+            color: #27ae60;
+        }
+
+        .toggle-link {
+            display: block;
+            margin-top: 25px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card" id="formContainer">
+        <img src="Logo_rijksoverheid.svg.png" alt="Logo" class="logo">
+        <h2 id="formTitle">Inloggen</h2>
+        <p id="formSubtitle">Toegang voor medewerkers van het CJIB</p>
+
+        <form id="authForm">
+            <div class="form-group">
+                <label>Gebruikersnaam</label>
+                <input type="text" id="username" placeholder="Gebruikersnaam" required>
+            </div>
+            <div class="form-group">
+                <label>Wachtwoord</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-action" id="submitBtn">Inloggen</button>
+            <div id="statusMsg" class="msg"></div>
+        </form>
+
+        <a class="toggle-link" id="toggleLink">Nog geen account? Registreer hier</a>
+        <br>
+        <a href="index.html" class="back-link">← Terug naar home</a>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        let isLogin = true;
+        const formTitle = document.getElementById('formTitle');
+        const formSubtitle = document.getElementById('formSubtitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const toggleLink = document.getElementById('toggleLink');
+        const statusMsg = document.getElementById('statusMsg');
+
+        toggleLink.onclick = () => {
+            isLogin = !isLogin;
+            statusMsg.style.display = 'none';
+            if (isLogin) {
+                formTitle.textContent = "Inloggen";
+                formSubtitle.textContent = "Toegang voor medewerkers van het CJIB";
+                submitBtn.textContent = "Inloggen";
+                toggleLink.textContent = "Nog geen account? Registreer hier";
+            } else {
+                formTitle.textContent = "Registreren";
+                formSubtitle.textContent = "Maak een nieuw account aan voor het CJIB";
+                submitBtn.textContent = "Account Aanmaken";
+                toggleLink.textContent = "Al een account? Log hier in";
+            }
+        };
+
+        document.getElementById('authForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            statusMsg.style.display = 'none';
+
+            if (isLogin) {
+                const result = await Auth.login(user, pass);
+                if (result.success) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    statusMsg.textContent = result.message || "Inloggen mislukt";
+                    statusMsg.className = "msg error-msg";
+                    statusMsg.style.display = 'block';
+                }
+            } else {
+                const result = await Auth.register(user, pass);
+                if (result.success) {
+                    statusMsg.textContent = "Registratie gelukt! Je kunt nu inloggen.";
+                    statusMsg.className = "msg success-msg";
+                    statusMsg.style.display = 'block';
+                    // Switch to login
+                    setTimeout(() => toggleLink.click(), 2000);
+                } else {
+                    statusMsg.textContent = result.message || "Registratie mislukt";
+                    statusMsg.className = "msg error-msg";
+                    statusMsg.style.display = 'block';
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alle Functies - Rijksoverheid</title>
     <style>
+        :root {
+            --primary: #154273;
+            --secondary: #a90061;
+            --text: #333;
+            --bg: #f5f5f5;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,9 +20,10 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
             overflow-x: hidden;
-            background: #f5f5f5;
+            background: var(--bg);
+            color: var(--text);
         }
 
         .header {
@@ -40,7 +48,7 @@
 
         .header-text h1 {
             font-size: 19px;
-            color: #1a1a1a;
+            color: var(--primary);
             font-weight: 600;
         }
 
@@ -51,10 +59,11 @@
         }
 
         .navbar {
-            background: #c6b8cf;
+            background: var(--primary);
             display: flex;
             justify-content: space-between;
             padding: 0;
+            color: white;
         }
 
         .nav-left {
@@ -64,20 +73,27 @@
 
         .nav-item {
             padding: 12px 24px;
-            color: #1a1a1a;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .nav-item.active {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             font-weight: 600;
+            color: white;
         }
 
         .home-icon {
-            font-size: 28px;
+            font-size: 24px;
             padding: 8px 24px;
             cursor: pointer;
+            color: white;
         }
 
         .nav-right {
@@ -88,7 +104,7 @@
         }
 
         .nav-right-item {
-            color: #1a1a1a;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 14px;
             cursor: pointer;
         }
@@ -115,17 +131,18 @@
         .add-function-btn {
             margin: 15px 20px;
             padding: 12px 20px;
-            background: #582f71;
+            background: var(--secondary);
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
+            transition: background 0.2s;
         }
 
         .add-function-btn:hover {
-            background: #6d3a8a;
+            background: #8a004f;
         }
 
         .reset-btn {
@@ -157,19 +174,22 @@
             justify-content: space-between;
             align-items: center;
             background: white;
+            transition: background 0.2s;
         }
 
         .function-item:hover {
-            background: #f5f5f5;
+            background: #f0f0f0;
         }
 
         .function-item.active {
-            background: #582f71;
+            background: var(--primary);
             color: white;
+            border-left: 5px solid var(--secondary);
         }
 
         .function-name {
             flex: 1;
+            font-weight: 500;
         }
 
         .delete-btn {
@@ -218,6 +238,8 @@
             flex: 1;
             background: #e8e8e8;
             position: relative;
+            background-image: linear-gradient(135deg, #f5f5f5 25%, #e0e0e0 25%, #e0e0e0 50%, #f5f5f5 50%, #f5f5f5 75%, #e0e0e0 75%, #e0e0e0 100%);
+            background-size: 20px 20px;
         }
 
         .content-card {
@@ -225,49 +247,58 @@
             right: 40px;
             top: 50%;
             transform: translateY(-50%);
-            width: 400px;
-            background: #582f71;
-            color: white;
-            border-radius: 8px;
+            width: 450px;
+            background: white;
+            color: var(--text);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-top: 6px solid var(--secondary);
         }
 
         .content-header {
             padding: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid #eee;
+            background: #fff;
         }
 
         .content-header h2 {
-            font-size: 32px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
         }
 
         .content-section {
             padding: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid #eee;
         }
 
         .content-section h3 {
-            font-size: 16px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            color: #888;
         }
 
         .content-section p {
-            font-size: 14px;
+            font-size: 15px;
             line-height: 1.6;
+            color: #444;
         }
 
         .content-footer {
             padding: 20px 25px;
             display: flex;
             justify-content: space-between;
-            background: rgba(0, 0, 0, 0.1);
+            align-items: center;
+            background: #f9f9f9;
         }
 
         .mbo-badge {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--primary);
+            color: white;
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 13px;
@@ -284,6 +315,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: 99999;
+            backdrop-filter: blur(3px);
         }
 
         .popup-overlay.active {
@@ -298,11 +330,13 @@
             background: white;
             border-radius: 10px;
             padding: 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            border-top: 6px solid var(--secondary);
         }
 
         .popup-form h2 {
             font-size: 28px;
-            color: #582f71;
+            color: var(--primary);
             margin-bottom: 25px;
         }
 
@@ -327,6 +361,14 @@
             border-radius: 6px;
             font-size: 14px;
             font-family: inherit;
+            transition: border 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .form-group textarea {
@@ -348,10 +390,15 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .form-buttons button:hover {
+            opacity: 0.9;
         }
 
         .btn-submit {
-            background: #582f71;
+            background: var(--primary);
             color: white;
         }
 
@@ -360,6 +407,7 @@
             color: #333;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -399,7 +447,8 @@
     <div class="main-layout">
         <div class="sidebar">
             <div class="search-box">
-                <span>zoek filters</span>
+                <input type="text" id="searchInput" placeholder="Zoek op titel..."
+                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
             </div>
             <button class="add-function-btn" id="addBtn">➕ Nieuwe functie toevoegen</button>
             <div class="function-list" id="functionList"></div>
@@ -488,7 +537,8 @@
 
 
 
-        // Data
+        // Data Layer (MySQL PHP API Integration)
+        const API_URL = 'api';
         const defaultData = {
             1: { titel: "Medewerker Administratie", beschrijving: "Verantwoordelijk voor het verwerken, controleren en bijhouden van administratieve en financiële gegevens binnen het CJIB.", benodigd: "MBO-diploma in administratieve richting. Basiskennis administratie, nauwkeurig werken en ervaring met computersystemen.", opleiding: "MBO", cursus: "Basisadministratie", vervolg_functie: "Junior Administratie" },
             2: { titel: "Juridisch Medewerker", beschrijving: "Ondersteunt bij juridische processen zoals het controleren van dossiers en het behandelen van bezwaren.", benodigd: "HBO-diploma in juridische richting. Kennis van wet- en regelgeving en ervaring met dossierbehandeling.", opleiding: "HBO", cursus: "Bestuursrecht Basis", vervolg_functie: "Rechtshulp Medewerker" },
@@ -502,26 +552,49 @@
             10: { titel: "HR Medewerker", beschrijving: "Ondersteunt personeelszaken zoals administratie en begeleiding van medewerkers.", benodigd: "MBO-diploma HR of administratie. Ervaring met personeelsadministratie is een pré.", opleiding: "MBO", cursus: "Personeelsadministratie", vervolg_functie: "Administratief Medewerker" }
         };
 
-        let functies = JSON.parse(localStorage.getItem('cjib_functies')) || { ...defaultData };
+        let functies = { ...defaultData };
+
+        async function loadFuncties() {
+            try {
+                const res = await fetch(`${API_URL}/functies.php`);
+                const data = await res.json();
+                if (Object.keys(data).length > 0) {
+                    functies = data;
+                }
+                render();
+                autoSelectFromUrl();
+            } catch (err) {
+                console.error("Kon functies niet laden:", err);
+                render();
+                autoSelectFromUrl();
+            }
+        }
 
         function save() {
+            // Future: Implement recursive save for all or just handle in form submit
             localStorage.setItem('cjib_functies', JSON.stringify(functies));
         }
 
-        function resetFuncties() {
-            if (confirm('Weet je zeker dat je alle functies wilt resetten naar de originele 10? Alle toegevoegde functies worden verwijderd!')) {
-                localStorage.setItem('cjib_functies', JSON.stringify(defaultData));
-                functies = { ...defaultData };
-                render();
-                if (Object.keys(functies).length > 0) {
-                    document.querySelector('.function-item').click();
-                }
-                alert('Functies zijn gereset naar de originele 10!');
+        async function saveFunctieToDB(data, id = null) {
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_URL}/functies.php?id=${id}` : `${API_URL}/functies.php`;
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                return await res.json();
+            } catch (err) {
+                console.error("Functie kon niet worden opgeslagen:", err);
             }
         }
 
         function render() {
             const list = document.getElementById('functionList');
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
             const isAdmin = typeof Auth !== 'undefined' && Auth.isAdmin();
 
             // Show/Hide Add Button
@@ -536,6 +609,11 @@
 
             list.innerHTML = '';
             Object.keys(functies).forEach(id => {
+                const f = functies[id];
+                if (searchTerm && !f.titel.toLowerCase().includes(searchTerm)) {
+                    return;
+                }
+
                 const div = document.createElement('div');
                 div.className = 'function-item';
 
@@ -548,7 +626,7 @@
                 }
 
                 div.innerHTML = `
-                    <span class="function-name">${functies[id].titel}</span>
+                    <span class="function-name">${f.titel}</span>
                     <div class="action-buttons">
                         ${buttonsHtml}
                     </div>
@@ -562,6 +640,14 @@
                 list.appendChild(div);
             });
         }
+
+        // Add event listener for search input
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', render);
+            }
+        });
 
         function deleteFunctie(id, event) {
             event.stopPropagation(); // ctie wordt geselecteerd
@@ -602,30 +688,42 @@
         }
 
         // Check for ?id=XYZ in URL on load
-        window.addEventListener('load', () => {
+        function autoSelectFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             if (id && functies[id]) {
-                // Remove 'active' from all, add to this one
+                // Show the details
+                show(id);
+
+                // Highlight and scroll in list
                 setTimeout(() => {
+                    // Update Active Class
                     const items = document.querySelectorAll('.function-item');
-                    items.forEach(i => i.classList.remove('active'));
+                    items.forEach(item => item.classList.remove('active'));
 
-                    // Find the item corresponding to this ID (bit hacky as we don't have IDs on elements, but index logic might differ)
-                    // Better: re-render list or just rely on show(id)
-                    // Let's iterate elements to find the one with correct title or just trust logical flow
-                    // Since we render from Object.keys, order is preserved.
+                    const targetTitle = functies[id].titel;
+                    let targetItem = null;
 
-                    // Trigger click on the correct element if possible, or just call show()
-                    show(id);
+                    items.forEach(item => {
+                        const titleSpan = item.querySelector('.function-name');
+                        if (titleSpan && titleSpan.textContent === targetTitle) {
+                            targetItem = item;
+                        }
+                    });
 
-                    // Visual highlight in list
-                    // We need to match the list item to the ID. 
-                    // Let's re-render list with ID logic or just Accept it works without visual highlight in list for now 
-                    // (Actually render() sets onclick which calls show, so we just call show directly)
+                    if (targetItem) {
+                        targetItem.classList.add('active');
+                        targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                 }, 100);
+            } else if (Object.keys(functies).length > 0) {
+                // Select first by default
+                const firstId = Object.keys(functies)[0];
+                show(firstId);
+                const firstItem = document.querySelector('.function-item');
+                if (firstItem) firstItem.classList.add('active');
             }
-        });
+        }
 
         document.getElementById('planRouteBtn').onclick = () => {
             window.location.href = 'routeplanner.html';
@@ -644,10 +742,8 @@
             }
         };
 
-        render();
-        if (Object.keys(functies).length > 0) {
-            document.querySelector('.function-item').click();
-        }
+        // Initial Load
+        loadFuncties();
 
         let editingId = null;
 
@@ -680,7 +776,7 @@
             editingId = null;
         };
 
-        document.getElementById('form').onsubmit = function (e) {
+        document.getElementById('form').onsubmit = async function (e) {
             e.preventDefault();
 
             const data = {
@@ -692,24 +788,25 @@
                 opleiding: document.getElementById('opleiding').value
             };
 
+            const result = await saveFunctieToDB(data, editingId);
+
             if (editingId) {
                 functies[editingId] = data;
                 alert('Functie bijgewerkt!');
             } else {
-                const newId = Object.keys(functies).length > 0
-                    ? Math.max(...Object.keys(functies).map(Number)) + 1
-                    : 1;
+                const newId = result.id;
                 functies[newId] = data;
                 alert('Functie toegevoegd!');
             }
 
-            save();
             render();
             document.getElementById('popup').classList.remove('active');
             document.getElementById('form').reset();
 
             // Re-show selected to update card
             if (editingId) show(editingId);
+            else if (result.id) show(result.id);
+
             editingId = null;
         };
     </script>

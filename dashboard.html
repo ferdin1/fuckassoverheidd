@@ -251,11 +251,17 @@
     <div class="bg-blob blob-2"></div>
 
     <div class="top-bar">
-        <div class="logo-container">
+        <div class="logo-container" onclick="window.location.href='index.html'" style="cursor: pointer;">
             <div class="logo-icon">RO</div>
             <div class="site-title">Rijksoverheid Portal</div>
         </div>
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 20px; color: white; font-size: 14px;">
+            <div id="userRoleDisplay">Rol: Gast</div>
+            <a href="#" id="loginLink"
+                style="color: white; text-decoration: none; font-weight: 600; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 4px;">Inloggen</a>
+        </div>
     </div>
+    <script src="auth.js"></script>
 
     <section class="hero">
         <h1>Welkom bij uw Overheid Dashboard</h1>
