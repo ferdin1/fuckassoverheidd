@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overheid Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #154273;
+      --primary-light: #1e5ba1;
+      --primary-dark: #0d2a4a;
+      --accent: #f9f9f9;
+      --text: #333333;
+      --text-light: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background-color: var(--primary);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--text-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .site-title {
+      color: var(--text-light);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 160px 40px 60px;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.8s forwards;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.8s 0.2s forwards;
+    }
+
+    /* Dashboard Container */
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      padding: 0 40px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Action Cards */
+    .action-card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 0.8s 0.4s forwards;
+    }
+
+    .action-card:nth-child(2) {
+      animation-delay: 0.6s;
+    }
+
+    .action-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      border-color: var(--primary-light);
+    }
+
+    .card-icon {
+      width: 90px;
+      height: 90px;
+      background: #f0f7ff;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .action-card:hover .card-icon {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .card-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+
+    .card-desc {
+      color: #777;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .card-btn {
+      padding: 14px 35px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-card:hover .card-btn {
+      background: var(--primary-dark);
+      padding: 14px 45px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Glassmorphism Background Decoration */
+    .bg-blob {
+      position: fixed;
+      z-index: -1;
+      filter: blur(80px);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .blob-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary-light);
+      top: -100px;
+      right: -100px;
+    }
+
+    .blob-2 {
+      width: 300px;
+      height: 300px;
+      background: #a1c4fd;
+      bottom: -50px;
+      left: -50px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+
+      .action-card {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <div class="top-bar">
+    <div class="logo-container">
+      <div class="logo-icon">RO</div>
+      <div class="site-title">Rijksoverheid Portal</div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <h1>Welkom bij uw Overheid Dashboard</h1>
+    <p>Centraal beheer van uw loopbaan en geografische inzichten binnen de Rijksoverheid.</p>
+  </section>
+
+  <div class="dashboard-container">
+    <!-- Kaart Card -->
+    <div class="action-card" onclick="window.location.href='routeplanner.html'">
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+      <h2 class="card-title">Interactieve Kaart</h2>
+      <p class="card-desc">Visualiseer locaties en plan uw routes direct via onze geavanceerde kaartinterface.</p>
+      <button class="card-btn">
+        Bekijk kaart
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Functie Zoeker Card -->
+    <div class="action-card" onclick="window.location.href='functies.html'">
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+      </div>
+      <h2 class="card-title">Functie Zoeker</h2>
+      <p class="card-desc">Ontdek nieuwe mogelijkheden en groei binnen de verschillende ministeries van de
+        Rijksoverheid.</p>
+      <button class="card-btn">
+        Zoek functies
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Voeg subtiele interactie toe aan de cards
+    document.querySelectorAll('.action-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+
+        card.style.transform = `translateY(-12px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `translateY(0) perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+      });
+    });
+  </script>
+</body>
+
+</html>

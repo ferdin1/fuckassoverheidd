@@ -1,0 +1,343 @@
+import React, { useState } from 'react';
+import { Briefcase, Search, Menu, Bell, User, MapPin, Clock, DollarSign, Heart, Filter, ChevronRight, Star } from 'lucide-react';
+
+export default function CareerDashboard() {
+  const [activeTab, setActiveTab] = useState('overzicht');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Alle');
+
+  const jobCategories = ['Alle', 'IT & Digitaal', 'Management', 'Beleid', 'Communicatie', 'Financiën'];
+
+  const jobListings = [
+    {
+      id: 1,
+      title: 'Senior Beleidsadviseur',
+      department: 'Ministerie van BZK',
+      location: 'Den Haag',
+      salary: '€4.500 - €6.200',
+      type: 'Fulltime',
+      level: 'Senior',
+      category: 'Beleid',
+      deadline: '31 januari 2026',
+      saved: false,
+      description: 'Werkzaam aan nationaal beleid voor digitale overheid en innovatie.'
+    },
+    {
+      id: 2,
+      title: 'IT Project Manager',
+      department: 'Ministerie van Financiën',
+      location: 'Amsterdam',
+      salary: '€5.000 - €7.000',
+      type: 'Fulltime',
+      level: 'Medior',
+      category: 'IT & Digitaal',
+      deadline: '15 februari 2026',
+      saved: true,
+      description: 'Leiding geven aan grote IT-transformatieprojecten binnen de overheid.'
+    },
+    {
+      id: 3,
+      title: 'Communicatieadviseur',
+      department: 'Ministerie van VWS',
+      location: 'Utrecht',
+      salary: '€3.800 - €5.200',
+      type: 'Fulltime',
+      level: 'Medior',
+      category: 'Communicatie',
+      deadline: '20 januari 2026',
+      saved: false,
+      description: 'Strategische communicatie rondom volksgezondheid en zorgbeleid.'
+    },
+    {
+      id: 4,
+      title: 'Data Analist',
+      department: 'CBS',
+      location: 'Den Haag',
+      salary: '€4.200 - €5.800',
+      type: 'Fulltime',
+      level: 'Medior',
+      category: 'IT & Digitaal',
+      deadline: '10 februari 2026',
+      saved: false,
+      description: 'Analyseren van grootschalige datasets voor statistisch onderzoek.'
+    },
+    {
+      id: 5,
+      title: 'Financieel Controller',
+      department: 'Ministerie van EZK',
+      location: 'Den Haag',
+      salary: '€4.000 - €5.500',
+      type: 'Fulltime',
+      level: 'Medior',
+      category: 'Financiën',
+      deadline: '25 januari 2026',
+      saved: true,
+      description: 'Budgetbeheer en financiële rapportages voor economische projecten.'
+    },
+    {
+      id: 6,
+      title: 'Afdelingshoofd HR',
+      department: 'Ministerie van J&V',
+      location: 'Den Haag',
+      salary: '€5.500 - €7.500',
+      type: 'Fulltime',
+      level: 'Senior',
+      category: 'Management',
+      deadline: '5 februari 2026',
+      saved: false,
+      description: 'Leiding geven aan HR-afdeling en ontwikkelen van talentbeleid.'
+    }
+  ];
+
+  const stats = [
+    { label: 'Openstaande Vacatures', value: '247' },
+    { label: 'Opgeslagen Functies', value: '12' },
+    { label: 'Nieuwe Deze Week', value: '18' },
+    { label: 'Sollicitaties', value: '5' }
+  ];
+
+  const filteredJobs = jobListings.filter(job => {
+    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) || job.department.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'Alle' || job.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-[#154273] text-white shadow-lg">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-2 rounded-lg hover:bg-[#1a5187] transition-colors"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold">Carrière Platform Rijksoverheid</h1>
+                <p className="text-sm text-blue-100">Ontdek jouw volgende functie</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <button className="relative p-2 rounded-lg hover:bg-[#1a5187] transition-colors">
+                <Bell className="w-6 h-6" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <div className="flex items-center space-x-2">
+                <div className="text-right">
+                  <p className="text-sm font-medium">Jan de Vries</p>
+                  <p className="text-xs text-blue-100">Beleidsmedewerker</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center">
+                  <User className="w-5 h-5 text-[#154273]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nav className="px-6 pb-4">
+          <div className="flex space-x-2">
+            <button 
+              onClick={() => setActiveTab('overzicht')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'overzicht' 
+                  ? 'bg-white text-[#154273] shadow-md' 
+                  : 'text-white hover:bg-[#1a5187]'
+              }`}
+            >
+              Dashboard Overzicht
+            </button>
+            <button 
+              onClick={() => setActiveTab('functies')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'functies' 
+                  ? 'bg-white text-[#154273] shadow-md' 
+                  : 'text-white hover:bg-[#1a5187]'
+              }`}
+            >
+              Functie Zoeker
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <div className="flex">
+        <aside className={`${sidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden bg-white shadow-lg min-h-screen`}>
+          <nav className="p-4 space-y-2">
+            <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-50 text-[#154273] font-medium">
+              <Briefcase className="w-5 h-5" />
+              <span>Mijn Carrière</span>
+            </a>
+            <a href="#" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors">
+              <Heart className="w-5 h-5" />
+              <span>Opgeslagen</span>
+            </a>
+          </nav>
+        </aside>
+
+        <main className="flex-1 p-6">
+          {activeTab === 'overzicht' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.map((stat, index) => (
+                  <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                    <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Aanbevolen Voor Jou</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {jobListings.slice(0, 4).map((job) => (
+                    <div key={job.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{job.title}</h3>
+                          <p className="text-sm text-gray-600">{job.department}</p>
+                        </div>
+                        <Heart className={`w-5 h-5 ${job.saved ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+                      </div>
+                      
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <MapPin className="w-4 h-4 mr-2" />
+                          <span>{job.location}</span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-600">
+                          <DollarSign className="w-4 h-4 mr-2" />
+                          <span>{job.salary}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full font-medium">
+                          {job.type}
+                        </span>
+                        <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
+                          {job.level}
+                        </span>
+                      </div>
+
+                      <button className="w-full bg-[#154273] text-white py-2 rounded-lg font-medium hover:bg-[#1a5187] transition-colors">
+                        Solliciteer Nu
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'functies' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Vind Jouw Ideale Functie</h2>
+                
+                <div className="flex flex-col md:flex-row gap-4 mb-6">
+                  <div className="flex-1 relative">
+                    <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                    <input 
+                      type="text" 
+                      placeholder="Zoek op functietitel of organisatie..." 
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-[#154273] transition-colors"
+                    />
+                  </div>
+                  <button className="px-6 py-3 bg-[#154273] text-white rounded-lg font-medium hover:bg-[#1a5187] transition-colors flex items-center justify-center">
+                    <Filter className="w-5 h-5 mr-2" />
+                    Filters
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {jobCategories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                        selectedCategory === category
+                          ? 'bg-[#154273] text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-900">
+                    {filteredJobs.length} functies gevonden
+                  </h3>
+                </div>
+
+                <div className="space-y-4">
+                  {filteredJobs.map((job) => (
+                    <div key={job.id} className="border-2 border-gray-200 rounded-lg p-6 hover:border-[#154273] transition-all hover:shadow-md">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-bold text-gray-900">{job.title}</h3>
+                            {job.saved && <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />}
+                          </div>
+                          <p className="text-gray-600 font-medium mb-3">{job.department}</p>
+                          <p className="text-sm text-gray-600 mb-4">{job.description}</p>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <div className="flex items-center text-sm text-gray-600">
+                              <MapPin className="w-4 h-4 mr-2 text-[#154273]" />
+                              <span>{job.location}</span>
+                            </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <DollarSign className="w-4 h-4 mr-2 text-[#154273]" />
+                              <span>{job.salary}</span>
+                            </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Briefcase className="w-4 h-4 mr-2 text-[#154273]" />
+                              <span>{job.type}</span>
+                            </div>
+                            <div className="flex items-center text-sm text-gray-600">
+                              <Clock className="w-4 h-4 mr-2 text-[#154273]" />
+                              <span>{job.deadline}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+                              {job.category}
+                            </span>
+                            <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
+                              {job.level}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2 ml-4">
+                          <button className="px-6 py-2 bg-[#154273] text-white rounded-lg font-medium hover:bg-[#1a5187] transition-colors whitespace-nowrap">
+                            Solliciteer
+                          </button>
+                          <button className="px-6 py-2 border-2 border-[#154273] text-[#154273] rounded-lg font-medium hover:bg-blue-50 transition-colors whitespace-nowrap">
+                            Meer info
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
