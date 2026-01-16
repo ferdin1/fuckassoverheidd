@@ -1,12 +1,12 @@
 // === JOUW RIJKSORGANISATIES NOORD-NEDERLAND ===
 const mapPins = [
-    { lat: 53.2194, lng: 6.5665, title: "Belastingdienst Groningen", description: "Financiële diensten | MBO/HBO", link: "functies.html?id=belastingdienst" },
-    { lat: 53.2000, lng: 6.1500, title: "DUO Groningen", description: "Onderwijsuitvoering | HBO/WO", link: "functies.html?id=duo" },
-    { lat: 53.1000, lng: 6.0000, title: "CJIB Groningen", description: "Justitie | MBO/HBO", link: "functies.html?id=cjib" },
-    { lat: 52.9500, lng: 6.4000, title: "RWS Drenthe", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
-    { lat: 53.3800, lng: 6.2200, title: "Douane Schiphol-Noord", description: "Douane | MBO", link: "functies.html?id=douane" },
+    { lat: 53.2194, lng: 6.5665, title: "Belastingdienst", description: "Financiële diensten | MBO/HBO", link: "functies.html?id=belastingdienst" },
+    { lat: 53.2000, lng: 6.1500, title: "DUO", description: "Onderwijsuitvoering | HBO/WO", link: "functies.html?id=duo" },
+    { lat: 53.1000, lng: 6.0000, title: "CJIB", description: "Justitie | MBO/HBO", link: "functies.html?id=cjib" },
+    { lat: 52.9500, lng: 6.4000, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
+    { lat: 53.3800, lng: 6.2200, title: "Douane", description: "Douane | MBO", link: "functies.html?id=douane" },
     { lat: 53.0500, lng: 5.8000, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
-    { lat: 53.0000, lng: 6.1000, title: "IND Groningen", description: "Immigratie | HBO", link: "functies.html?id=ind" }
+    { lat: 53.0000, lng: 6.1000, title: "IND", description: "Immigratie | HBO", link: "functies.html?id=ind" }
 ];
 
 // === KAART INITIALISATIE ===
@@ -41,6 +41,14 @@ function renderPins() {
     // Nieuwe markers voor elke organisatie
     mapPins.forEach(pin => {
         const marker = L.marker([pin.lat, pin.lng]).addTo(map);
+        
+        // Voeg label toe met organisatienaam
+        marker.bindTooltip(pin.title, {
+            permanent: true,
+            direction: 'top',
+            offset: [0, -10],
+            className: 'marker-label'
+        });
         
         const popupContent = `
             <div class="popup-header">${pin.title}</div>
