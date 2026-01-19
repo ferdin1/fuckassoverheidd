@@ -1,6 +1,6 @@
 const Auth = {
     USER_KEY: 'cjib_user',
-    API_URL: 'api', // Gebruik een relatief pad zodat het altijd werkt in de projectmap
+    API_URL: '../api', // Correct path van front-end naar api folder
 
     login: async function (username, password) {
         try {
