@@ -1,12 +1,12 @@
 // === JOUW RIJKSORGANISATIES NOORD-NEDERLAND ===
 const mapPins = [
-    { lat: 53.2194, lng: 6.5665, title: "Belastingdienst", description: "Financiële diensten | MBO/HBO", link: "functies.html?id=belastingdienst" },
-    { lat: 53.2000, lng: 6.1500, title: "DUO", description: "Onderwijsuitvoering | HBO/WO", link: "functies.html?id=duo" },
-    { lat: 53.1000, lng: 6.0000, title: "CJIB", description: "Justitie | MBO/HBO", link: "functies.html?id=cjib" },
-    { lat: 52.9500, lng: 6.4000, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
-    { lat: 53.3800, lng: 6.2200, title: "Douane", description: "Douane | MBO", link: "functies.html?id=douane" },
-    { lat: 53.0500, lng: 5.8000, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
-    { lat: 53.0000, lng: 6.1000, title: "IND", description: "Immigratie | HBO", link: "functies.html?id=ind" }
+    { lat: 53.2129, lng: 6.5626, title: "Belastingdienst", description: "Financiële diensten | MBO/HBO", link: "functies.html?id=belastingdienst" },
+    { lat: 53.2100, lng: 6.5600, title: "DUO", description: "Onderwijsuitvoering | HBO/WO", link: "functies.html?id=duo" },
+    { lat: 53.2011, lng: 5.7861, title: "CJIB", description: "Justitie | MBO/HBO", link: "functies.html?id=cjib" },
+    { lat: 52.5929, lng: 6.5623, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
+    { lat: 53.2200, lng: 6.6000, title: "Douane", description: "Douane | MBO", link: "functies.html?id=douane" },
+    { lat: 53.2000, lng: 5.7900, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
+    { lat: 53.2130, lng: 6.5630, title: "IND", description: "Immigratie | HBO", link: "functies.html?id=ind" }
 ];
 
 // === KAART INITIALISATIE ===
@@ -40,12 +40,12 @@ function renderPins() {
 
     // Nieuwe markers voor elke organisatie
     mapPins.forEach(pin => {
-        // Create Custom Building Icon
+        // Create Custom Building Icon with Photo
         const buildingIcon = L.divIcon({
-            html: `<div class="building-marker"><i class="fas fa-building"></i></div>`,
-            iconSize: [40, 40],
-            iconAnchor: [20, 40],
-            popupAnchor: [0, -40],
+            html: `<div class="building-marker" style="background-image: url('../front-end/images/gebouw.avif'); background-size: cover; background-position: center;"></div>`,
+            iconSize: [50, 50],
+            iconAnchor: [25, 50],
+            popupAnchor: [0, -50],
             className: 'building-icon-wrapper'
         });
 
