@@ -158,22 +158,22 @@
             z-index: 999;
             background: white;
             border-radius: 8px;
-            padding: 30px;
-            max-width: 400px;
+            padding: 40px;
+            max-width: 480px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             border-left: 5px solid var(--secondary);
         }
 
         .how-it-works h3 {
-            margin: 0 0 20px 0;
+            margin: 0 0 25px 0;
             color: var(--primary);
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
         }
 
         .how-it-works p {
             margin: 0 0 16px 0;
-            font-size: 15px;
+            font-size: 16px;
             line-height: 1.6;
             color: #555;
         }
@@ -183,7 +183,42 @@
         }
 
         .how-it-works strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
 
+        .more-info-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .more-info-btn:hover {
+            background: #8a004a;
+        }
+
+        .extra-info {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .extra-info.show {
+            display: block;
+        }
+
+        .extra-info p {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
             .steps {
                 display: flex;
                 flex-direction: column;
@@ -422,26 +457,27 @@
     <div id="map">
         <!-- HOE WERKT HET PANEL -->
         <div class="how-it-works">
-            <h3>📍 Hoe werkt het?</h3>
-            <p><strong>Klik op een gebouw</strong> om meer informatie over deze rijksorganisatie en de beschikbare functies te zien.</p>
-            <p>Door op de organisatie te klikken kom je op de pagina met alle <strong>beschikbare functies</strong> die zij aanbieden.</p>
-                <h3>🗺️ Hoe werkt het?</h3>
-                <p>Ontdek alle rijksorganisaties in Noord-Nederland en hun beschikbare functies!</p>
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-text"><strong>Verken de kaart</strong> - Scroll en zoom om alle organisaties te zien</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-text"><strong>Klik op een gebouw</strong> - Bekijk details over de organisatie</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-text"><strong>Bekijk functies</strong> - Lees meer over alle beschikbare functies</div>
-                    </div>
+            <h3>🗺️ Hoe werkt het?</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text"><strong>Verken de kaart</strong> - Scroll en zoom om alle organisaties te zien</div>
                 </div>
-        </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text"><strong>Klik op een gebouw</strong> - Bekijk details over de organisatie</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text"><strong>Bekijk functies</strong> - Lees meer over alle beschikbare functies</div>
+                </div>
+            </div>
+            <button class="more-info-btn" onclick="toggleMoreInfo()">ℹ️ Meer informatie</button>
+            <div class="extra-info" id="extraInfo">
+                <p><strong>Over deze kaart:</strong> Op deze kaart vind je alle rijksorganisaties die actief zijn in Noord-Nederland (Groningen, Friesland en Drenthe).</p>
+                <p><strong>Beschikbare functies:</strong> Elke organisatie biedt verschillende functies en diensten aan. Kijk welke functies beschikbaar zijn voor jouw locatie.</p>
+                <p><strong>Contact:</strong> Voor vragen kun je contact opnemen met de specifieke organisatie via hun website.</p>
+            </div>
     </div>
 
     <!-- MODAL FOR ADDING PIN -->
@@ -466,6 +502,14 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        function toggleMoreInfo() {
+            const extraInfo = document.getElementById('extraInfo');
+            extraInfo.classList.toggle('show');
+            const btn = document.querySelector('.more-info-btn');
+            btn.textContent = extraInfo.classList.contains('show') ? '✕ Minder informatie' : 'ℹ️ Meer informatie';
+        }
+    </script>
     <script src="auth.js"></script>
 
     <script>
