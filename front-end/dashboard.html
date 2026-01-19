@@ -98,6 +98,112 @@
             font-size: 1.2rem;
             color: #666;
             margin-bottom: 40px;
+        }
+
+        /* LOGIN MODAL */
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-modal.show {
+            display: flex;
+        }
+
+        .login-modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-top: 6px solid var(--primary);
+        }
+
+        .login-modal-content h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .login-modal-content .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-modal-content label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .login-modal-content input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .login-modal-content input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(21, 66, 115, 0.3);
+        }
+
+        .login-modal-content button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-modal-content button:hover {
+            background: var(--primary-dark);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-close:hover {
+            color: #000;
+        }
+
+        .login-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+        }
+
+        .login-status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .login-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeIn 0.8s 0.2s forwards;
@@ -313,7 +419,69 @@
         </div>
     </div>
 
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-modal-content">
+            <span class="modal-close" onclick="document.getElementById('loginModal').classList.remove('show')">&times;</span>
+            <h2>Inloggen</h2>
+            <form id="dashboardLoginForm">
+                <div class="form-group">
+                    <label>Gebruikersnaam</label>
+                    <input type="text" id="dashboardUsername" placeholder="Gebruikersnaam" required>
+                </div>
+                <div class="form-group">
+                    <label>Wachtwoord</label>
+                    <input type="password" id="dashboardPassword" placeholder="Wachtwoord" required>
+                </div>
+                <button type="submit">Inloggen</button>
+                <div id="dashboardLoginStatus" class="login-status"></div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // LOGIN MODAL FUNCTIONALITY
+        const loginLink = document.getElementById('loginLink');
+        const loginModal = document.getElementById('loginModal');
+        const loginForm = document.getElementById('dashboardLoginForm');
+        const statusMsg = document.getElementById('dashboardLoginStatus');
+
+        // Open modal on login link click
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const user = Auth.getUser();
+            if (!user) {
+                loginModal.classList.add('show');
+            }
+        });
+
+        // Close modal on outside click
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('show');
+            }
+        });
+
+        // Handle form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('dashboardUsername').value;
+            const password = document.getElementById('dashboardPassword').value;
+
+            const result = await Auth.login(username, password);
+            if (result.success) {
+                statusMsg.textContent = 'Inloggen succesvol! Dashboard wordt vernieuwd...';
+                statusMsg.className = 'login-status success';
+                setTimeout(() => {
+                    loginModal.classList.remove('show');
+                    location.reload();
+                }, 1500);
+            } else {
+                statusMsg.textContent = result.message || 'Inloggen mislukt';
+                statusMsg.className = 'login-status error';
+            }
+        });
+
         // Voeg subtiele interactie toe aan de cards
         document.querySelectorAll('.action-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
