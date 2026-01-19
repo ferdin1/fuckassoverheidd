@@ -40,13 +40,22 @@ function renderPins() {
 
     // Nieuwe markers voor elke organisatie
     mapPins.forEach(pin => {
-        const marker = L.marker([pin.lat, pin.lng]).addTo(map);
+        // Create Custom Building Icon
+        const buildingIcon = L.divIcon({
+            html: `<div class="building-marker"><i class="fas fa-building"></i></div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+            popupAnchor: [0, -40],
+            className: 'building-icon-wrapper'
+        });
+
+        const marker = L.marker([pin.lat, pin.lng], { icon: buildingIcon }).addTo(map);
         
         // Voeg label toe met organisatienaam
         marker.bindTooltip(pin.title, {
             permanent: true,
             direction: 'top',
-            offset: [0, -10],
+            offset: [0, -50],
             className: 'marker-label'
         });
         
