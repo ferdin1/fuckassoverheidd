@@ -143,10 +143,81 @@
             width: 100%;
             z-index: 1;
             cursor: default;
+            position: relative;
         }
 
         .edit-mode #map {
             cursor: crosshair;
+        }
+
+        /* HOE WERKT HET PANEL */
+        .how-it-works {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .how-it-works h3 {
+            margin: 0 0 20px 0;
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .how-it-works p {
+            margin: 0 0 16px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .how-it-works p:last-child {
+            margin-bottom: 0;
+        }
+
+        .how-it-works strong {
+
+            .steps {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-top: 15px;
+            }
+
+            .step {
+                display: flex;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .step-number {
+                background: var(--secondary);
+                color: white;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .step-text {
+                font-size: 14px;
+                color: #555;
+                line-height: 1.4;
+            }
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* POPUP STYLES */
@@ -348,7 +419,30 @@
     </div>
 
     <!-- MAP CONTAINER -->
-    <div id="map"></div>
+    <div id="map">
+        <!-- HOE WERKT HET PANEL -->
+        <div class="how-it-works">
+            <h3>📍 Hoe werkt het?</h3>
+            <p><strong>Klik op een gebouw</strong> om meer informatie over deze rijksorganisatie en de beschikbare functies te zien.</p>
+            <p>Door op de organisatie te klikken kom je op de pagina met alle <strong>beschikbare functies</strong> die zij aanbieden.</p>
+                <h3>🗺️ Hoe werkt het?</h3>
+                <p>Ontdek alle rijksorganisaties in Noord-Nederland en hun beschikbare functies!</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-text"><strong>Verken de kaart</strong> - Scroll en zoom om alle organisaties te zien</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-text"><strong>Klik op een gebouw</strong> - Bekijk details over de organisatie</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-text"><strong>Bekijk functies</strong> - Lees meer over alle beschikbare functies</div>
+                    </div>
+                </div>
+        </div>
+    </div>
 
     <!-- MODAL FOR ADDING PIN -->
     <div id="addPinModal" class="modal">
