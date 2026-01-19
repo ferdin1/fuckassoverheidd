@@ -439,7 +439,8 @@
 
     <div class="top-bar">
         <div class="logo-area">
-            <div>📍 Map Noord-Nederland</div>
+            <img src="../images/rijksoverheid-1.svg" alt="Rijksoverheid logo" style="height:36px; margin-right:10px;">
+            <div>Map Noord-Nederland</div>
             <div class="admin-controls" id="adminControls">
                 <label class="admin-toggle">
                     <div class="switch">
@@ -593,9 +594,6 @@
         }).addTo(map);
 
         // Kaart niet meer beperken tot Noord-Nederland
-        // const northBounds = L.latLngBounds([52.8, 3.5], [53.7, 7.2]);
-        // map.setMaxBounds(northBounds);
-        // map.fitBounds(northBounds);
 
         // State
         let isEditMode = false;
