@@ -2,8 +2,31 @@ const Auth = {
     USER_KEY: 'cjib_user',
     API_URL: '../api', // Correct path van front-end naar api folder
 
+    // TEST ACCOUNTS (lokaal in localStorage)
+    TEST_ACCOUNTS: {
+        'admin': { password: 'admin', role: 'admin' },
+        'editor': { password: 'editor123', role: 'editor' }
+    },
+
     login: async function (username, password) {
         try {
+            // TEST MODE: Check tegen lokale accounts
+            if (this.TEST_ACCOUNTS[username]) {
+                if (this.TEST_ACCOUNTS[username].password === password) {
+                    const user = {
+                        username: username,
+                        role: this.TEST_ACCOUNTS[username].role,
+                        isLoggedIn: true
+                    };
+                    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+                    console.log('✅ Test login succesvol!');
+                    return { success: true, user };
+                } else {
+                    return { success: false, message: "Wachtwoord onjuist" };
+                }
+            }
+
+            // NORMALE MODE: Probeer database
             const res = await fetch(`${this.API_URL}/login.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -30,16 +53,17 @@ const Auth = {
 
     register: async function (username, password) {
         try {
-            const res = await fetch(`${this.API_URL}/register.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
-            return data;
+            // TEST MODE: Voeg toe aan lokale accounts
+            if (!this.TEST_ACCOUNTS[username]) {
+                this.TEST_ACCOUNTS[username] = { password: password, role: 'user' };
+                console.log('✅ Test account aangemaakt!');
+                return { success: true, message: "Account aangemaakt!" };
+            } else {
+                return { success: false, message: "Gebruikersnaam is al bezet" };
+            }
         } catch (err) {
             console.error("Register Error:", err);
-            return { success: false, message: "Verbindingsfout naar de database" };
+            return { success: false, message: "Registratie mislukt" };
         }
     },
 
@@ -89,6 +113,8 @@ const Auth = {
         }
     }
 };
+
+console.log('🧪 TEST MODE AKTIEF - Gebruik: admin/admin of editor/editor123');
 
 document.addEventListener('DOMContentLoaded', () => {
     Auth.updateUI();
