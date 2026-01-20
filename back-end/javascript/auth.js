@@ -69,7 +69,7 @@ const Auth = {
 
     logout: function () {
         localStorage.removeItem(this.USER_KEY);
-        window.location.href = 'index.html';
+        window.location.href = 'dashboard.html';
     },
 
     getUser: function () {
