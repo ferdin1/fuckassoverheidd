@@ -1,5 +1,6 @@
+-- Active: 1768897901548@@127.0.0.1@3306@datarijksnoord
 -- Test accounts voor inloggen
-USE cjib_db;
+USE datarijksnoord;
 
 -- Admin account (wachtwoord: admin)
 INSERT INTO users (username, password, role) VALUES 
