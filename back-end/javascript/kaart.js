@@ -5,7 +5,7 @@ const mapPins = [
     { lat: 53.2011, lng: 5.7861, title: "CJIB", description: "Justitie | MBO/HBO", link: "functies.html?id=cjib" },
     { lat: 52.5929, lng: 6.5623, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
     { lat: 53.2200, lng: 6.6000, title: "Douane", description: "Douane | MBO", link: "functies.html?id=douane" },
-    { lat: 53.2000, lng: 5.7900, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
+    { lat: 53.2008, lng: 5.7997, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
     { lat: 53.2130, lng: 6.5630, title: "IND", description: "Immigratie | HBO", link: "functies.html?id=ind" }
 ];
 
