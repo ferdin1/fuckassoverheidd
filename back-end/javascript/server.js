@@ -10,10 +10,11 @@ app.use(bodyParser.json());
 // MySQL Verbinding configuratie
 // PAS DIT AAN NAAR JOUW EIGEN GEGEVENS
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: '', // Meestal leeg bij XAMPP
-    database: 'cjib_db'
+    database: 'datarijksnoord',
+    port: 3306
 });
 
 db.connect((err) => {
