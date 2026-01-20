@@ -3,10 +3,12 @@ const mapPins = [
     { lat: 53.2129, lng: 6.5626, title: "Belastingdienst", description: "Financiële diensten | MBO/HBO", link: "functies.html?id=belastingdienst" },
     { lat: 53.2100, lng: 6.5600, title: "DUO", description: "Onderwijsuitvoering | HBO/WO", link: "functies.html?id=duo" },
     { lat: 53.2010, lng: 5.7985, title: "CJIB", description: "Justitie | MBO/HBO", link: "../front-end/cjibpagina.html" },
-    { lat: 52.5929, lng: 6.5623, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "functies.html?id=rws" },
+    { lat: 52.5929, lng: 6.5623, title: "RWS", description: "Infrastructuur | MBO/HBO", link: "../front-end/rwspagina.html" },
     { lat: 53.2200, lng: 6.6000, title: "Douane", description: "Douane | MBO", link: "functies.html?id=douane" },
     { lat: 53.2008, lng: 5.7997, title: "Rechtbank Noord-Nederland", description: "Justitie | HBO/WO", link: "functies.html?id=rechtbank" },
     { lat: 53.2130, lng: 6.5630, title: "IND", description: "Immigratie | HBO", link: "functies.html?id=ind" }
+    { lat: 53.2600, lng: 6.6200, title: "RDW", description: "Voertuigregistratie | MBO/HBO", link: "rdw.html" },
+
 ];
 
 // === KAART INITIALISATIE ===
