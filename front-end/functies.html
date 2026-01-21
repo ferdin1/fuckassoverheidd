@@ -5,538 +5,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alle Functies - Rijksoverheid</title>
-    <style>
-        :root {
-            --primary: #154273;
-            --secondary: #a90061;
-            --text: #333;
-            --bg: #f5f5f5;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Outfit', 'Segoe UI', sans-serif;
-            overflow-x: hidden;
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .header {
-            background: white;
-            padding: 20px 50px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-        }
-
-        .header-text h1 {
-            font-size: 19px;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .header-text p {
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-        }
-
-        .navbar {
-            background: var(--primary);
-            display: flex;
-            justify-content: space-between;
-            padding: 0;
-            color: white;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-item {
-            padding: 12px 24px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-item.active {
-            background: rgba(255, 255, 255, 0.2);
-            font-weight: 600;
-            color: white;
-        }
-
-        .home-icon {
-            font-size: 24px;
-            padding: 8px 24px;
-            cursor: pointer;
-            color: white;
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 30px;
-            padding-right: 30px;
-            align-items: center;
-        }
-
-        .nav-right-item {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .main-layout {
-            display: flex;
-            height: calc(100vh - 130px);
-        }
-
-        .sidebar {
-            width: 350px;
-            background: white;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .search-box {
-            padding: 20px;
-            border-bottom: 1px solid #ddd;
-            background: #f9f9f9;
-        }
-
-        .add-function-btn {
-            margin: 15px 20px;
-            padding: 12px 20px;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .add-function-btn:hover {
-            background: #8a004f;
-        }
-
-        .reset-btn {
-            margin: 0 20px 15px 20px;
-            padding: 10px 20px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .reset-btn:hover {
-            background: #c0392b;
-        }
-
-        .function-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .function-item {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            transition: background 0.2s;
-        }
-
-        .function-item:hover {
-            background: #f0f0f0;
-        }
-
-        .function-item.active {
-            background: var(--primary);
-            color: white;
-            border-left: 5px solid var(--secondary);
-        }
-
-        .function-name {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .delete-btn {
-            background: transparent;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px 10px;
-            opacity: 0.6;
-            transition: opacity 0.2s;
-        }
-
-        .delete-btn:hover {
-            opacity: 1;
-        }
-
-        .function-item.active .delete-btn {
-            color: white;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            margin-right: 10px;
-        }
-
-        .edit-btn {
-            background: transparent;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px;
-            opacity: 0.6;
-            transition: opacity 0.2s;
-        }
-
-        .edit-btn:hover {
-            opacity: 1;
-        }
-
-        .function-item.active .edit-btn {
-            color: white;
-        }
-
-        .content-area {
-            flex: 1;
-            background: #e8e8e8;
-            position: relative;
-            background-image: linear-gradient(135deg, #f5f5f5 25%, #e0e0e0 25%, #e0e0e0 50%, #f5f5f5 50%, #f5f5f5 75%, #e0e0e0 75%, #e0e0e0 100%);
-            background-size: 20px 20px;
-        }
-
-        .content-card {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 450px;
-            background: white;
-            color: var(--text);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-top: 6px solid var(--secondary);
-        }
-
-        .content-header {
-            padding: 25px;
-            border-bottom: 1px solid #eee;
-            background: #fff;
-        }
-
-        .content-header h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .content-section {
-            padding: 25px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .content-section h3 {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            font-weight: 700;
-            color: #888;
-        }
-
-        .content-section p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #444;
-        }
-
-        .content-footer {
-            padding: 20px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f9f9f9;
-        }
-
-        .mbo-badge {
-            background: var(--primary);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        /* POPUP */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 99999;
-            backdrop-filter: blur(3px);
-        }
-
-        .popup-overlay.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .popup-form {
-            width: 600px;
-            max-width: 90%;
-            background: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            border-top: 6px solid var(--secondary);
-        }
-
-        .popup-form h2 {
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .form-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .form-buttons button {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .form-buttons button:hover {
-            opacity: 0.9;
-        }
-
-        .btn-submit {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #e0e0e0;
-            color: #333;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/rijkshuisstijl.css">
 </head>
 
 <body>
-    <div class="header">
-        <div class="header-left">
-            <div class="logo">
-                <img src="Logo_rijksoverheid.svg.png" alt="Logo"
-                    style="width: 100%; height: 100%; object-fit: contain;">
-            </div>
-            <div class="header-text">
-                <h1>Rijksoverheid</h1>
-                <p>Ministerie van Justitie en Veiligheid</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="navbar">
-        <div class="nav-left">
-            <a href="dashboard.html" style="text-decoration: none; color: inherit;">
-                <div class="home-icon">🏠</div>
+    <header class="rijk-top-bar">
+        <div class="rijk-header-top">
+            <a href="dashboard.html" class="rijk-logo-link">
+                <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
+                    alt="Rijksoverheid Logo" class="rijk-logo">
+                <span class="rijk-org-name">Rijksoverheid Loopbaan</span>
+                <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
             </a>
-            <div class="nav-item" onclick="window.open('https://www.cjib.nl/over-ons/wat-is-het-cjib', '_blank')"
-                style="cursor: pointer;">Over ons</div>
-            <div class="nav-item active">alle functies binnen Rijksoverheid</div>
-            <div class="nav-item" onclick="window.location.href='routeplanner.html'" style="cursor: pointer;">
-                Routeplanner</div>
-            <div class="nav-item" id="userRoleDisplay">Rol: Gast</div>
         </div>
-        <div class="nav-right">
-            <div class="nav-right-item">instellingen ⚙️</div>
-            <div class="nav-right-item">🇳🇱 NL</div>
-            <div class="nav-right-item" id="loginLink" style="cursor: pointer;">Inloggen</div>
+        <div class="rijk-header-nav">
+            <nav class="rijk-main-nav">
+                <a href="dashboard.html" class="rijk-nav-link">Home</a>
+                <a href="kaart.html" class="rijk-nav-link">Kaart</a>
+                <a href="functies.html" class="rijk-nav-link active">Functies</a>
+                <button class="rijk-nav-link"
+                    onclick="window.open('https://www.cjib.nl/over-ons/wat-is-het-cjib', '_blank')">Over ons</button>
+                <button class="rijk-nav-link">Menu</button>
+            </nav>
+            <div class="rijk-search-container">
+                <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
+                <button class="rijk-search-btn">🔍</button>
+            </div>
+            <div>
+                <span id="userRoleDisplay" class="rijk-nav-link">Rol: Gast</span>
+                <a href="#" id="loginLink" class="rijk-login-btn">Inloggen</a>
+            </div>
         </div>
-    </div>
+    </header>
     <script src="auth.js"></script>
 
-    <div class="main-layout">
-        <div class="sidebar">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Zoek op titel..."
-                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+    <div class="rijk-functies-layout">
+        <div class="rijk-sidebar">
+            <div class="rijk-search-box">
+                <input type="text" id="searchInput" class="rijk-input" placeholder="Zoek op titel...">
             </div>
-            <button class="add-function-btn" id="addBtn">➕ Nieuwe functie toevoegen</button>
-            <div class="function-list" id="functionList"></div>
+            <button class="rijk-btn rijk-btn-secondary" id="addBtn">➕ Nieuwe functie toevoegen</button>
+            <div class="rijk-function-list" id="functionList"></div>
         </div>
 
-        <div class="content-area">
-            <div class="content-card">
-                <div class="content-header">
+        <div class="rijk-content-area">
+            <div class="rijk-content-card-float">
+                <div class="rijk-content-header">
                     <h2 id="cardTitle">Titel</h2>
                 </div>
-                <div class="content-section">
+                <div class="rijk-content-section">
                     <h3>Beschrijving</h3>
                     <p id="cardDesc">Beschrijving</p>
                 </div>
-                <div class="content-section">
+                <div class="rijk-content-section">
                     <h3>Benodigdheden</h3>
                     <p id="cardBenodigd">Benodigdheden</p>
                 </div>
-                <div class="content-footer">
+                <div class="rijk-content-footer">
                     <span>Opleiding</span>
-                    <span class="mbo-badge" id="cardOpleiding">MBO</span>
+                    <span class="rijk-badge" id="cardOpleiding">MBO</span>
                 </div>
-                <div class="content-section"
-                    style="border-top: 1px solid rgba(255, 255, 255, 0.2); display: flex; gap: 10px;">
-                    <button class="add-function-btn" id="savePersonalBtn"
-                        style="margin: 0; flex: 1; background: var(--secondary);">Opslaan in Mijn Functies</button>
-                    <button class="add-function-btn" id="planRouteBtn"
-                        style="margin: 0; flex: 1; background: #8b7ba8;">Bekijk Route in Planner</button>
+                <div class="rijk-content-section flex-between">
+                    <button class="rijk-btn rijk-btn-secondary" id="savePersonalBtn">Opslaan in Mijn Functies</button>
+                    <button class="rijk-btn" id="planRouteBtn">Bekijk Route in Planner</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- POPUP -->
-    <div class="popup-overlay" id="popup">
-        <div class="popup-form">
+    <div class="rijk-modal" id="popup">
+        <div class="rijk-modal-content">
             <h2>Nieuwe functie aanmaken</h2>
             <form id="form">
-                <div class="form-group">
-                    <label>Functie titel *</label>
-                    <input type="text" id="titel" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Functie titel *</label>
+                    <input type="text" id="titel" class="rijk-input" required>
                 </div>
-                <div class="form-group">
-                    <label>cursus benodigd *</label>
-                    <input type="text" id="cursus" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Cursus benodigd *</label>
+                    <input type="text" id="cursus" class="rijk-input" required>
                 </div>
-                <div class="form-group">
-                    <label>vorige functie nodig om te doen*</label>
-                    <input type="text" id="vervolg_functie" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Vorige functie nodig om te doen*</label>
+                    <input type="text" id="vervolg_functie" class="rijk-input" required>
                 </div>
-                <div class="form-group">
-                    <label>Beschrijving *</label>
-                    <textarea id="beschrijving" required></textarea>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Beschrijving *</label>
+                    <textarea id="beschrijving" class="rijk-textarea" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Benodigdheden *</label>
-                    <textarea id="benodigd" required></textarea>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Benodigdheden *</label>
+                    <textarea id="benodigd" class="rijk-textarea" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Opleiding niveau *</label>
-                    <select id="opleiding" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Opleiding niveau *</label>
+                    <select id="opleiding" class="rijk-select" required>
                         <option value="">Kies</option>
                         <option value="MBO">MBO</option>
                         <option value="HBO">HBO</option>
                         <option value="WO">WO</option>
                     </select>
                 </div>
-                <div class="form-buttons">
-                    <button type="button" class="btn-cancel" id="cancelBtn">Annuleren</button>
-                    <button type="submit" class="btn-submit">Toevoegen</button>
+                <div class="flex-between flex-gap">
+                    <button type="button" class="rijk-btn rijk-btn-outline" id="cancelBtn">Annuleren</button>
+                    <button type="submit" class="rijk-btn">Toevoegen</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-
-        if (localStorage.getItem('darkmode') === 'enabled') {
-            document.body.classList.add('dark');
-            darkToggle.checked = true;
-        }
-
-
-
-
-
-
-
         // Data Layer (MySQL PHP API Integration)
         const API_URL = 'api';
         const defaultData = {
@@ -571,14 +150,11 @@
         }
 
         function save() {
-            // Future: Implement recursive save for all or just handle in form submit
             localStorage.setItem('cjib_functies', JSON.stringify(functies));
         }
 
         async function saveFunctieToDB(data, id = null) {
-            const method = id ? 'PUT' : 'POST';
             const url = id ? `${API_URL}/functies.php?id=${id}` : `${API_URL}/functies.php`;
-
             try {
                 const res = await fetch(url, {
                     method: 'POST',
@@ -597,14 +173,9 @@
             const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
             const isAdmin = typeof Auth !== 'undefined' && Auth.isAdmin();
 
-            // Show/Hide Add Button
             const addBtn = document.getElementById('addBtn');
             if (addBtn) {
-                if (isAdmin) {
-                    addBtn.style.display = 'block';
-                } else {
-                    addBtn.style.display = 'none';
-                }
+                addBtn.style.display = isAdmin ? 'block' : 'none';
             }
 
             list.innerHTML = '';
@@ -615,25 +186,25 @@
                 }
 
                 const div = document.createElement('div');
-                div.className = 'function-item';
+                div.className = 'rijk-function-item';
 
                 let buttonsHtml = '';
                 if (isAdmin) {
                     buttonsHtml = `
-                        <button class="edit-btn" onclick="editFunctie(${id}, event)">✏️</button>
-                        <button class="delete-btn" onclick="deleteFunctie(${id}, event)">🗑️</button>
+                        <button class="rijk-edit-btn" onclick="editFunctie(${id}, event)">✏️</button>
+                        <button class="rijk-delete-btn" onclick="deleteFunctie(${id}, event)">🗑️</button>
                     `;
                 }
 
                 div.innerHTML = `
-                    <span class="function-name">${f.titel}</span>
-                    <div class="action-buttons">
+                    <span class="rijk-function-name">${f.titel}</span>
+                    <div class="rijk-action-buttons">
                         ${buttonsHtml}
                     </div>
                     <span>→</span>
                 `;
                 div.onclick = () => {
-                    document.querySelectorAll('.function-item').forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('.rijk-function-item').forEach(i => i.classList.remove('active'));
                     div.classList.add('active');
                     show(id);
                 };
@@ -641,7 +212,6 @@
             });
         }
 
-        // Add event listener for search input
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
@@ -650,22 +220,13 @@
         });
 
         function deleteFunctie(id, event) {
-            event.stopPropagation(); // ctie wordt geselecteerd
-
+            event.stopPropagation();
             if (confirm('Weet je zeker dat je deze functie wilt verwijderen?')) {
                 delete functies[id];
                 save();
                 render();
-
-                // Toon eerste functie als er nog functies zijn
                 if (Object.keys(functies).length > 0) {
-                    document.querySelector('.function-item').click();
-                } else {
-                    // Maak card leeg als er geen functies meer zijn
-                    document.getElementById('cardTitle').textContent = 'Geen functies';
-                    document.getElementById('cardDesc').textContent = '';
-                    document.getElementById('cardBenodigd').textContent = '';
-                    document.getElementById('cardOpleiding').textContent = '';
+                    document.querySelector('.rijk-function-item').click();
                 }
             }
         }
@@ -680,47 +241,37 @@
             document.getElementById('cardBenodigd').textContent = f.benodigd;
             document.getElementById('cardOpleiding').textContent = f.opleiding;
 
-            // Auto-save selection for persistent navigation
             localStorage.setItem('routeplanner_selection', JSON.stringify({
                 type: 'full',
                 id: id
             }));
         }
 
-        // Check for ?id=XYZ in URL on load
         function autoSelectFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             if (id && functies[id]) {
-                // Show the details
                 show(id);
-
-                // Highlight and scroll in list
                 setTimeout(() => {
-                    // Update Active Class
-                    const items = document.querySelectorAll('.function-item');
+                    const items = document.querySelectorAll('.rijk-function-item');
                     items.forEach(item => item.classList.remove('active'));
-
                     const targetTitle = functies[id].titel;
                     let targetItem = null;
-
                     items.forEach(item => {
-                        const titleSpan = item.querySelector('.function-name');
+                        const titleSpan = item.querySelector('.rijk-function-name');
                         if (titleSpan && titleSpan.textContent === targetTitle) {
                             targetItem = item;
                         }
                     });
-
                     if (targetItem) {
                         targetItem.classList.add('active');
                         targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }, 100);
             } else if (Object.keys(functies).length > 0) {
-                // Select first by default
                 const firstId = Object.keys(functies)[0];
                 show(firstId);
-                const firstItem = document.querySelector('.function-item');
+                const firstItem = document.querySelector('.rijk-function-item');
                 if (firstItem) firstItem.classList.add('active');
             }
         }
@@ -742,7 +293,6 @@
             }
         };
 
-        // Initial Load
         loadFuncties();
 
         let editingId = null;
@@ -794,19 +344,15 @@
                 functies[editingId] = data;
                 alert('Functie bijgewerkt!');
             } else {
-                const newId = result.id;
+                const newId = result.id || Date.now();
                 functies[newId] = data;
                 alert('Functie toegevoegd!');
             }
 
+            save();
             render();
             document.getElementById('popup').classList.remove('active');
             document.getElementById('form').reset();
-
-            // Re-show selected to update card
-            if (editingId) show(editingId);
-            else if (result.id) show(result.id);
-
             editingId = null;
         };
     </script>

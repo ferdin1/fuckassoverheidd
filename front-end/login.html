@@ -5,165 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inloggen / Registreren - Rijksoverheid</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #154273;
-            --secondary: #a90061;
-            --text: #333;
-            --bg: #f5f5f5;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        body {
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            width: 400px;
-            border-top: 6px solid var(--primary);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .logo {
-            width: 100px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .btn-action {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-action:hover {
-            opacity: 0.9;
-        }
-
-        .msg {
-            font-size: 13px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .error-msg {
-            color: #e74c3c;
-        }
-
-        .success-msg {
-            color: #27ae60;
-        }
-
-        .toggle-link {
-            display: block;
-            margin-top: 25px;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .toggle-link:hover {
-            text-decoration: underline;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: #888;
-            text-decoration: none;
-            font-size: 13px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/rijkshuisstijl.css">
 </head>
 
 <body>
-
-    <div class="login-card" id="formContainer">
-        <img src="/Schermafbeelding 2025-12-08 133618.png" alt="Logo" class="logo">
-        <h2 id="formTitle">Inloggen</h2>
-        <p id="formSubtitle">Toegang voor medewerkers van het CJIB</p>
-
-        <form id="authForm">
-            <div class="form-group">
-                <label>Gebruikersnaam</label>
-                <input type="text" id="username" placeholder="Gebruikersnaam" required>
+    <header class="rijk-top-bar">
+        <div class="rijk-header-top">
+            <a href="dashboard.html" class="rijk-logo-link">
+                <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
+                    alt="Rijksoverheid Logo" class="rijk-logo">
+                <span class="rijk-org-name">Rijksoverheid Loopbaan</span>
+                <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
+            </a>
+        </div>
+        <div class="rijk-header-nav">
+            <nav class="rijk-main-nav">
+                <a href="dashboard.html" class="rijk-nav-link">Home</a>
+                <a href="kaart.html" class="rijk-nav-link">Kaart</a>
+                <a href="functies.html" class="rijk-nav-link">Functies</a>
+                <button class="rijk-nav-link">Menu</button>
+            </nav>
+            <div class="rijk-search-container">
+                <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
+                <button class="rijk-search-btn">🔍</button>
             </div>
-            <div class="form-group">
-                <label>Wachtwoord</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+            <div>
+                <a href="dashboard.html" class="rijk-login-btn">← Terug</a>
             </div>
-            <button type="submit" class="btn-action" id="submitBtn">Inloggen</button>
-            <div id="statusMsg" class="msg"></div>
-        </form>
+        </div>
+    </header>
 
-        <a class="toggle-link" id="toggleLink">Nog geen account? Registreer hier</a>
-        <br>
-        <a href="dashboard.html" class="back-link">← Terug naar dashboard</a>
+    <div class="rijk-login-container">
+        <div class="rijk-login-card" id="formContainer">
+            <h2 id="formTitle">Inloggen</h2>
+            <p id="formSubtitle" class="rijk-card-text">Toegang voor medewerkers van het CJIB</p>
+
+            <form id="authForm">
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Gebruikersnaam</label>
+                    <input type="text" id="username" class="rijk-input" placeholder="Gebruikersnaam" required>
+                </div>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Wachtwoord</label>
+                    <input type="password" id="password" class="rijk-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="rijk-btn" id="submitBtn">Inloggen</button>
+                <div id="statusMsg" class="rijk-message" style="display: none;"></div>
+            </form>
+
+            <a class="rijk-nav-link text-center mt-lg" id="toggleLink">Nog geen account? Registreer hier</a>
+            <br>
+            <a href="dashboard.html" class="rijk-nav-link text-center mt-sm">← Terug naar dashboard</a>
+        </div>
     </div>
 
     <script src="../back-end/javascript/auth.js"></script>
@@ -198,27 +91,28 @@
 
             statusMsg.style.display = 'none';
 
-            if (isLogin) {
-                const result = await Auth.login(user, pass);
-                if (result.success) {
-                    window.location.href = 'dashboard.html';
+            if (typeof Auth !== 'undefined') {
+                if (isLogin) {
+                    const result = await Auth.login(user, pass);
+                    if (result.success) {
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        statusMsg.textContent = result.message || "Inloggen mislukt";
+                        statusMsg.className = "rijk-message rijk-message-error";
+                        statusMsg.style.display = 'block';
+                    }
                 } else {
-                    statusMsg.textContent = result.message || "Inloggen mislukt";
-                    statusMsg.className = "msg error-msg";
-                    statusMsg.style.display = 'block';
-                }
-            } else {
-                const result = await Auth.register(user, pass);
-                if (result.success) {
-                    statusMsg.textContent = "Registratie gelukt! Je kunt nu inloggen.";
-                    statusMsg.className = "msg success-msg";
-                    statusMsg.style.display = 'block';
-                    // Switch to login
-                    setTimeout(() => toggleLink.click(), 2000);
-                } else {
-                    statusMsg.textContent = result.message || "Registratie mislukt";
-                    statusMsg.className = "msg error-msg";
-                    statusMsg.style.display = 'block';
+                    const result = await Auth.register(user, pass);
+                    if (result.success) {
+                        statusMsg.textContent = "Registratie gelukt! Je kunt nu inloggen.";
+                        statusMsg.className = "rijk-message rijk-message-success";
+                        statusMsg.style.display = 'block';
+                        setTimeout(() => toggleLink.click(), 2000);
+                    } else {
+                        statusMsg.textContent = result.message || "Registratie mislukt";
+                        statusMsg.className = "rijk-message rijk-message-error";
+                        statusMsg.style.display = 'block';
+                    }
                 }
             }
         };

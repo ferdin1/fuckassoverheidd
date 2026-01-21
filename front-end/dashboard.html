@@ -5,440 +5,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overheid Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #154273;
-            --primary-light: #1e5ba1;
-            --primary-dark: #0d2a4a;
-            --accent: #f9f9f9;
-            --text: #333333;
-            --text-light: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        body {
-            background-color: #f0f2f5;
-            color: var(--text);
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            background-color: var(--primary);
-            height: 70px;
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--text-light);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .site-title {
-            color: var(--text-light);
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 160px 40px 60px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s forwards;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 40px;
-        }
-
-        /* LOGIN MODAL */
-        .login-modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-modal.show {
-            display: flex;
-        }
-
-        .login-modal-content {
-            background-color: white;
-            padding: 40px;
-            border-radius: 12px;
-            width: 400px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            border-top: 6px solid var(--primary);
-        }
-
-        .login-modal-content h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .login-modal-content .form-group {
-            margin-bottom: 20px;
-        }
-
-        .login-modal-content label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .login-modal-content input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .login-modal-content input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 5px rgba(21, 66, 115, 0.3);
-        }
-
-        .login-modal-content button {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .login-modal-content button:hover {
-            background: var(--primary-dark);
-        }
-
-        .modal-close {
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .modal-close:hover {
-            color: #000;
-        }
-
-        .login-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            display: none;
-        }
-
-        .login-status.success {
-            background: #d4edda;
-            color: #155724;
-            display: block;
-        }
-
-        .login-status.error {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s 0.2s forwards;
-        }
-
-        /* Dashboard Container */
-        .dashboard-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            padding: 0 40px 100px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Action Cards */
-        .action-card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeIn 0.8s 0.4s forwards;
-        }
-
-        .action-card:nth-child(2) {
-            animation-delay: 0.6s;
-        }
-
-        .action-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-            border-color: var(--primary-light);
-        }
-
-        .card-icon {
-            width: 90px;
-            height: 90px;
-            background: #f0f7ff;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .action-card:hover .card-icon {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .card-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 15px;
-        }
-
-        .card-desc {
-            color: #777;
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 30px;
-        }
-
-        .card-btn {
-            padding: 14px 35px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-card:hover .card-btn {
-            background: var(--primary-dark);
-            padding: 14px 45px;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Glassmorphism Background Decoration */
-        .bg-blob {
-            position: fixed;
-            z-index: -1;
-            filter: blur(80px);
-            border-radius: 50%;
-            opacity: 0.4;
-        }
-
-        .blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary-light);
-            top: -100px;
-            right: -100px;
-        }
-
-        .blob-2 {
-            width: 300px;
-            height: 300px;
-            background: #a1c4fd;
-            bottom: -50px;
-            left: -50px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.25rem;
-            }
-
-            .dashboard-container {
-                grid-template-columns: 1fr;
-            }
-
-            .action-card {
-                padding: 30px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/rijkshuisstijl.css">
 </head>
 
 <body>
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-
-    <div class="top-bar">
-        <div class="logo-container" onclick="window.location.href='dashboard.html'" style="cursor: pointer;">
-            <div class="logo-icon">RO</div>
-            <div class="site-title">Rijksoverheid Portal</div>
+    <header class="rijk-top-bar">
+        <!-- Top section: Logo + Organization + Ministry -->
+        <div class="rijk-header-top">
+            <a href="dashboard.html" class="rijk-logo-link">
+                <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
+                    alt="Rijksoverheid Logo" class="rijk-logo">
+                <span class="rijk-org-name">Rijksoverheid Loopbaan</span>
+                <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
+            </a>
         </div>
-        <div style="margin-left: auto; display: flex; align-items: center; gap: 20px; color: white; font-size: 14px;">
-            <div id="userRoleDisplay">Rol: Gast</div>
-            <a href="#" id="loginLink"
-                style="color: white; text-decoration: none; font-weight: 600; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 4px;">Inloggen</a>
-        </div>
-    </div>
-    <script src="../back-end/javascript/auth.js"></script>
 
-    <section class="hero">
-        <h1>Welkom bij uw Overheid Dashboard</h1>
-        <p>Centraal beheer van uw loopbaan en geografische inzichten binnen de Rijksoverheid.</p>
-    </section>
+        <!-- Navigation section: Main nav + Search + Login -->
+        <div class="rijk-header-nav">
+            <nav class="rijk-main-nav">
+                <a href="dashboard.html" class="rijk-nav-link active">Home</a>
+                <a href="kaart.html" class="rijk-nav-link">Kaart</a>
+                <a href="functies.html" class="rijk-nav-link">Functies</a>
+                <button class="rijk-nav-link">Menu</button>
+            </nav>
 
-    <div class="dashboard-container">
-        <!-- Kaart Card -->
-        <div class="action-card" onclick="window.location.href='kaart.html'">
-            <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
+            <div class="rijk-search-container">
+                <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
+                <button class="rijk-search-btn">🔍</button>
             </div>
-            <h2 class="card-title">Interactieve Kaart</h2>
-            <p class="card-desc">Visualiseer locaties en plan uw routes direct via onze geavanceerde kaartinterface.</p>
-            <button class="card-btn">
-                Bekijk kaart
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </button>
+
+            <div>
+                <span id="userRoleDisplay" class="rijk-nav-link">Rol: Gast</span>
+                <a href="#" id="loginLink" class="rijk-login-btn">Inloggen</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="rijk-container">
+        <div class="rijk-hero">
+            <h1 class="rijk-hero-title">Welkom bij uw Overheid Dashboard</h1>
+            <p class="rijk-hero-text">Centraal beheer van uw loopbaan en geografische inzichten binnen de Rijksoverheid.
+            </p>
         </div>
 
-        <!-- Functie Zoeker Card -->
-        <div class="action-card" onclick="window.location.href='functies.html'">
-            <div class="card-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                </svg>
+        <div class="rijk-grid rijk-grid-3">
+            <div class="rijk-card rijk-card-clickable" onclick="window.location.href='kaart.html'">
+                <div class="rijk-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </div>
+                <h3 class="rijk-card-title">Interactieve Kaart</h3>
+                <p class="rijk-card-text">Visualiseer locaties en plan uw routes direct via onze geavanceerde
+                    kaartinterface.</p>
+                <button class="rijk-btn">Bekijk kaart</button>
             </div>
-            <h2 class="card-title">Functie Zoeker</h2>
-            <p class="card-desc">Ontdek nieuwe mogelijkheden en groei binnen de verschillende ministeries van de
-                Rijksoverheid.</p>
-            <button class="card-btn">
-                Zoek functies
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-            </button>
+
+            <div class="rijk-card rijk-card-clickable" onclick="window.location.href='functies.html'">
+                <div class="rijk-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                </div>
+                <h3 class="rijk-card-title">Functie Zoeker</h3>
+                <p class="rijk-card-text">Ontdek nieuwe mogelijkheden en groei binnen de verschillende ministeries van
+                    de Rijksoverheid.</p>
+                <button class="rijk-btn">Zoek functies</button>
+            </div>
+
+            <div class="rijk-card rijk-card-accent">
+                <div class="rijk-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3 class="rijk-card-title">Mijn Profiel</h3>
+                <p class="rijk-card-text">Beheer uw persoonlijke gegevens en voorkeuren binnen het systeem.</p>
+                <button class="rijk-btn rijk-btn-secondary">Bekijk profiel</button>
+            </div>
         </div>
     </div>
 
     <!-- LOGIN MODAL -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-modal-content">
-            <span class="modal-close" onclick="document.getElementById('loginModal').classList.remove('show')">&times;</span>
-            <h2>Inloggen</h2>
+    <div id="loginModal" class="rijk-modal">
+        <div class="rijk-modal-content">
+            <span class="rijk-modal-close"
+                onclick="document.getElementById('loginModal').classList.remove('active')">&times;</span>
+            <div class="rijk-modal-header">
+                <h2 class="rijk-modal-title">Inloggen</h2>
+            </div>
             <form id="dashboardLoginForm">
-                <div class="form-group">
-                    <label>Gebruikersnaam</label>
-                    <input type="text" id="dashboardUsername" placeholder="Gebruikersnaam" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Gebruikersnaam</label>
+                    <input type="text" id="dashboardUsername" class="rijk-input" placeholder="Gebruikersnaam" required>
                 </div>
-                <div class="form-group">
-                    <label>Wachtwoord</label>
-                    <input type="password" id="dashboardPassword" placeholder="Wachtwoord" required>
+                <div class="rijk-form-group">
+                    <label class="rijk-label">Wachtwoord</label>
+                    <input type="password" id="dashboardPassword" class="rijk-input" placeholder="Wachtwoord" required>
                 </div>
-                <button type="submit">Inloggen</button>
-                <div id="dashboardLoginStatus" class="login-status"></div>
+                <button type="submit" class="rijk-btn">Inloggen</button>
+                <div id="dashboardLoginStatus" class="rijk-message" style="display: none;"></div>
             </form>
         </div>
     </div>
 
+    <script src="../back-end/javascript/auth.js"></script>
     <script>
         // LOGIN MODAL FUNCTIONALITY
         const loginLink = document.getElementById('loginLink');
@@ -449,16 +128,16 @@
         // Open modal on login link click
         loginLink.addEventListener('click', (e) => {
             e.preventDefault();
-            const user = Auth.getUser();
+            const user = typeof Auth !== 'undefined' && Auth.getUser ? Auth.getUser() : null;
             if (!user) {
-                loginModal.classList.add('show');
+                loginModal.classList.add('active');
             }
         });
 
         // Close modal on outside click
         loginModal.addEventListener('click', (e) => {
             if (e.target === loginModal) {
-                loginModal.classList.remove('show');
+                loginModal.classList.remove('active');
             }
         });
 
@@ -468,39 +147,22 @@
             const username = document.getElementById('dashboardUsername').value;
             const password = document.getElementById('dashboardPassword').value;
 
-            const result = await Auth.login(username, password);
-            if (result.success) {
-                statusMsg.textContent = 'Inloggen succesvol! Dashboard wordt vernieuwd...';
-                statusMsg.className = 'login-status success';
-                setTimeout(() => {
-                    loginModal.classList.remove('show');
-                    location.reload();
-                }, 1500);
-            } else {
-                statusMsg.textContent = result.message || 'Inloggen mislukt';
-                statusMsg.className = 'login-status error';
+            if (typeof Auth !== 'undefined' && Auth.login) {
+                const result = await Auth.login(username, password);
+                if (result.success) {
+                    statusMsg.textContent = 'Inloggen succesvol! Dashboard wordt vernieuwd...';
+                    statusMsg.className = 'rijk-message rijk-message-success';
+                    statusMsg.style.display = 'block';
+                    setTimeout(() => {
+                        loginModal.classList.remove('active');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    statusMsg.textContent = result.message || 'Inloggen mislukt';
+                    statusMsg.className = 'rijk-message rijk-message-error';
+                    statusMsg.style.display = 'block';
+                }
             }
-        });
-
-        // Voeg subtiele interactie toe aan de cards
-        document.querySelectorAll('.action-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-
-                card.style.transform = `translateY(-12px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `translateY(0) perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            });
         });
     </script>
 </body>

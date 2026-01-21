@@ -5,332 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaart van Noord-Nederland - Rijksoverheid</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Font Awesome for Building Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/rijkshuisstijl.css">
     <style>
-        :root {
-            --primary: #154273;
-            --secondary: #a90061;
-            --text: #333;
-            --bg: #f5f5f5;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
+        /* Map-specific styles that must be inline for Leaflet */
         body {
-            background: var(--bg);
             height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-
-        /* HEADER */
-        .top-bar {
-            background: var(--primary);
-            height: 60px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            color: white;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
-            /* Above map */
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 18px;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* ADMIN CONTROLS */
-        .admin-controls {
-            display: none;
-            /* Hidden by default */
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-
-        .admin-toggle {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 34px;
-            height: 20px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.slider {
-            background-color: var(--secondary);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(14px);
-        }
-
-        /* MAP */
-        #map {
-            flex: 1;
-            width: 100%;
-            z-index: 1;
-            cursor: default;
-            position: relative;
         }
 
         .edit-mode #map {
             cursor: crosshair;
         }
 
-        /* HOE WERKT HET PANEL */
-        .how-it-works {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 999;
-            background: white;
-            border-radius: 8px;
-            padding: 40px;
-            max-width: 480px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            border-left: 5px solid var(--secondary);
-        }
-
-        .how-it-works h3 {
-            margin: 0 0 25px 0;
-            color: var(--primary);
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .how-it-works p {
-            margin: 0 0 16px 0;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .how-it-works p:last-child {
-            margin-bottom: 0;
-        }
-
-        .how-it-works strong {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .more-info-btn {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .more-info-btn:hover {
-            background: #8a004a;
-        }
-
-        .extra-info {
-            display: none;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .extra-info.show {
-            display: block;
-        }
-
-        .extra-info p {
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-            .steps {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 15px;
-            }
-
-            .step {
-                display: flex;
-                gap: 10px;
-                align-items: flex-start;
-            }
-
-            .step-number {
-                background: var(--secondary);
-                color: white;
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 600;
-                font-size: 13px;
-                flex-shrink: 0;
-            }
-
-            .step-text {
-                font-size: 14px;
-                color: #555;
-                line-height: 1.4;
-            }
-         
-        
-
-        /* POPUP STYLES */
-        .custom-popup .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            padding: 0;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .custom-popup .leaflet-popup-content {
-            margin: 0;
-            width: 200px !important;
-        }
-
-        .popup-header {
-            background: var(--primary);
-            color: white;
-            padding: 10px 15px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .popup-body {
-            padding: 15px;
-            background: white;
-        }
-
-        .popup-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            padding: 8px 0;
-            border-radius: 4px;
-            font-size: 13px;
-            margin-top: 5px;
-        }
-
-        .popup-btn:hover {
-            background: #0d2a4a;
-        }
-
-        .delete-pin-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 5px;
-        }
-
-        .delete-pin-btn:hover {
-            background: #c0392b;
-        }
-
-        /* MARKER LABELS */
-        .marker-label {
-            background: var(--primary);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        /* BUILDING MARKER ICON */
         .building-marker {
-            background: var(--primary);
+            background: var(--rijk-blue);
             color: white;
             border: 2px solid white;
-            border-radius: 4px;
+            border-radius: var(--radius-card);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -346,192 +40,155 @@
             transition: all 0.2s ease;
         }
 
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
+        .marker-label {
+            background: var(--rijk-blue);
+            color: white;
+            padding: 4px 8px;
+            border-radius: var(--radius-button);
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .modal-content {
-            background-color: #fefefe;
-            padding: 25px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        .custom-popup .leaflet-popup-content-wrapper {
+            border-radius: var(--radius-card);
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .modal h2 {
-            margin-bottom: 20px;
-            color: var(--primary);
-            font-size: 20px;
+        .custom-popup .leaflet-popup-content {
+            margin: 0;
+            width: 200px !important;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
+        .popup-header {
+            background: var(--rijk-blue);
+            color: white;
+            padding: 10px 15px;
             font-weight: 600;
             font-size: 14px;
         }
 
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-confirm {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #eee;
-            color: #333;
-        }
-
-        /* Alert */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            display: none;
-            z-index: 3000;
+        .popup-body {
+            padding: 15px;
+            background: white;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="top-bar">
-        <div class="logo-area">
-            <img src="../images/rijksoverheid-1.svg" alt="Rijksoverheid logo" style="height:36px; margin-right:10px;">
-            <div>Map Noord-Nederland</div>
-            <div class="admin-controls" id="adminControls">
-                <label class="admin-toggle">
-                    <div class="switch">
-                        <input type="checkbox" id="editModeToggle">
-                        <span class="slider"></span>
-                    </div>
-                    <span>Bewerk Modus</span>
-                </label>
+    <header class="rijk-top-bar">
+        <div class="rijk-header-top">
+            <a href="dashboard.html" class="rijk-logo-link">
+                <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
+                    alt="Rijksoverheid Logo" class="rijk-logo">
+                <span class="rijk-org-name">Rijksoverheid Loopbaan</span>
+                <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
+            </a>
+        </div>
+        <div class="rijk-header-nav">
+            <nav class="rijk-main-nav">
+                <a href="dashboard.html" class="rijk-nav-link">Home</a>
+                <a href="kaart.html" class="rijk-nav-link active">Kaart</a>
+                <a href="functies.html" class="rijk-nav-link">Functies</a>
+                <button class="rijk-nav-link">Menu</button>
+            </nav>
+            <div class="rijk-search-container">
+                <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
+                <button class="rijk-search-btn">🔍</button>
+            </div>
+            <div>
+                <div class="rijk-admin-controls" id="adminControls">
+                    <label class="rijk-admin-toggle">
+                        <div class="rijk-switch">
+                            <input type="checkbox" id="editModeToggle">
+                            <span class="rijk-switch-slider"></span>
+                        </div>
+                        <span>Bewerk Modus</span>
+                    </label>
+                </div>
+                <a href="#" id="loginLink" class="rijk-login-btn">Inloggen</a>
             </div>
         </div>
-        <button class="back-btn" onclick="window.location.href='dashboard.html'">← Terug naar Dashboard</button>
-    </div>
+    </header>
 
-    <!-- MAP CONTAINER -->
-    <div id="map">
-        <!-- HOE WERKT HET PANEL -->
-        <div class="how-it-works">
-            <h3>🗺️ Hoe werkt het?</h3>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-text"><strong>Verken de kaart</strong> - Scroll en zoom om alle organisaties te zien</div>
+    <div class="rijk-map-container" id="map">
+        <div class="rijk-map-info-panel">
+            <h3 class="rijk-map-info-title">🗺️ Hoe werkt het?</h3>
+            <div class="rijk-map-steps">
+                <div class="rijk-map-step">
+                    <div class="rijk-map-step-number">1</div>
+                    <div class="rijk-map-step-text"><strong>Verken de kaart</strong> - Scroll en zoom om alle
+                        organisaties te zien</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-text"><strong>Klik op een gebouw</strong> - Bekijk details over de organisatie</div>
+                <div class="rijk-map-step">
+                    <div class="rijk-map-step-number">2</div>
+                    <div class="rijk-map-step-text"><strong>Klik op een gebouw</strong> - Bekijk details over de
+                        organisatie</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-text"><strong>Bekijk functies</strong> - Lees meer over alle beschikbare functies</div>
+                <div class="rijk-map-step">
+                    <div class="rijk-map-step-number">3</div>
+                    <div class="rijk-map-step-text"><strong>Bekijk functies</strong> - Lees meer over alle beschikbare
+                        functies</div>
                 </div>
             </div>
-            <button class="more-info-btn" onclick="toggleMoreInfo()">ℹ️ Meer informatie</button>
-            <div class="extra-info" id="extraInfo">
-                <p><strong>Over deze kaart:</strong> Op deze kaart vind je alle rijksorganisaties die actief zijn in Noord-Nederland (Groningen, Friesland en Drenthe).</p>
-                <p><strong>Beschikbare functies:</strong> Elke organisatie biedt verschillende functies en diensten aan. Kijk welke functies beschikbaar zijn voor jouw locatie.</p>
-                <p><strong>Contact:</strong> Voor vragen kun je contact opnemen met de specifieke organisatie via hun website.</p>
+            <button class="rijk-map-toggle-btn" onclick="toggleMoreInfo()">ℹ️ Meer informatie</button>
+            <div class="rijk-map-extra-info" id="extraInfo">
+                <p><strong>Over deze kaart:</strong> Op deze kaart vind je alle rijksorganisaties die actief zijn in
+                    Noord-Nederland (Groningen, Friesland en Drenthe).</p>
+                <p><strong>Beschikbare functies:</strong> Elke organisatie biedt verschillende functies en diensten aan.
+                    Kijk welke functies beschikbaar zijn voor jouw locatie.</p>
+                <p><strong>Contact:</strong> Voor vragen kun je contact opnemen met de specifieke organisatie via hun
+                    website.</p>
             </div>
+        </div>
     </div>
 
-    <!-- MODAL FOR ADDING PIN -->
-    <div id="addPinModal" class="modal">
-        <div class="modal-content">
+    <div id="addPinModal" class="rijk-modal">
+        <div class="rijk-modal-content">
             <h2>Nieuwe Pin Toevoegen</h2>
-            <div class="form-group">
-                <label>Selecteer Functie:</label>
-                <select id="functionSelect">
-                    <!-- Options populated by JS -->
-                </select>
+            <div class="rijk-form-group">
+                <label class="rijk-label">Selecteer Functie:</label>
+                <select id="functionSelect" class="rijk-select"></select>
             </div>
-            <div class="modal-actions">
-                <button class="btn btn-cancel" onclick="closeModal()">Annuleren</button>
-                <button class="btn btn-confirm" onclick="savePin()">Pin Plaatsen</button>
+            <div class="flex-between flex-gap">
+                <button class="rijk-btn rijk-btn-outline" onclick="closeModal()">Annuleren</button>
+                <button class="rijk-btn" onclick="savePin()">Pin Plaatsen</button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="toast">Pin succesvol toegevoegd!</div>
+    <div id="toast" class="rijk-message rijk-message-success">Pin succesvol toegevoegd!</div>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script>
         function toggleMoreInfo() {
             const extraInfo = document.getElementById('extraInfo');
             extraInfo.classList.toggle('show');
-            const btn = document.querySelector('.more-info-btn');
+            const btn = document.querySelector('.rijk-map-toggle-btn');
             btn.textContent = extraInfo.classList.contains('show') ? '✕ Minder informatie' : 'ℹ️ Meer informatie';
         }
     </script>
     <script src="auth.js"></script>
 
     <script>
-        // --- DATA LAYER (MySQL PHP API Integration) ---
+        // Data Layer
         const API_URL = 'api';
         let functionsData = {};
         let mapPins = [];
 
         async function loadInitialData() {
             try {
-                // Fetch Functions
                 const fRes = await fetch(`${API_URL}/functies.php`);
                 functionsData = await fRes.json();
-
-                // Fetch Pins
                 const pRes = await fetch(`${API_URL}/pins.php`);
                 mapPins = await pRes.json();
-
                 renderPins();
             } catch (err) {
                 console.error("Data kon niet worden geladen:", err);
-                // Fallback naar defaultPins
                 mapPins = defaultPins;
                 functionsData = JSON.parse(localStorage.getItem('cjib_functies')) || {};
                 renderPins();
@@ -546,7 +203,7 @@
                     body: JSON.stringify(pin)
                 });
                 const data = await res.json();
-                pin.id = data.id; // Store DB id
+                pin.id = data.id;
                 return data;
             } catch (err) {
                 console.error("Pin kon niet worden opgeslagen:", err);
@@ -560,9 +217,7 @@
                 console.error("Pin kon niet worden verwijderd:", err);
             }
         }
-        // ---------------------------------------------------
 
-        // Default pins als fallback
         const defaultPins = [
             { lat: 53.2010, lng: 5.7985, title: "CJIB", description: "Justitieel Incasso | MBO/HBO", link: "cjibpagina.html" },
             { lat: 53.2157, lng: 5.8010, title: "Justid", description: "Justitiële diensten | HBO", link: "#" },
@@ -572,8 +227,7 @@
             { lat: 53.2129, lng: 6.5626, title: "Belastingdienst", description: "Belastingheffing | MBO/HBO", link: "#" },
             { lat: 53.2200, lng: 6.6000, title: "Douane", description: "Douane & Accijns | MBO", link: "#" },
             { lat: 53.2100, lng: 6.5600, title: "DUO", description: "Onderwijsuitvoering | HBO/WO", link: "#" },
-          { lat: 53.2600, lng: 6.6200, title: "RDW", description: "Voertuigregistratie | MBO/HBO", link: "rdw.html" },
-
+            { lat: 53.2600, lng: 6.6200, title: "RDW", description: "Voertuigregistratie | MBO/HBO", link: "rdw.html" },
             { lat: 53.2200, lng: 6.5800, title: "IND", description: "Immigratie | HBO", link: "#" },
             { lat: 53.2300, lng: 6.6500, title: "RDI", description: "Rijksoverheid Diensten | HBO/WO", link: "#" },
             { lat: 53.2350, lng: 6.5900, title: "IMG", description: "Immigratie diensten | HBO", link: "#" },
@@ -581,11 +235,10 @@
             { lat: 53.2008, lng: 5.7997, title: "Rechtbank Noord-Nederland", description: "Rechtspraak | HBO/WO", link: "#" }
         ];
 
-        // Init Map (Focus on North Netherlands)
         const map = L.map('map', {
             minZoom: 9,
             maxZoom: 18
-        }).setView([53.1, 6.5], 9); // Groningen/Friesland/Drenthe area
+        }).setView([53.1, 6.5], 9);
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -593,30 +246,20 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Kaart niet meer beperken tot Noord-Nederland
-        // const northBounds = L.latLngBounds([52.8, 3.5], [53.7, 7.2]);
-        // map.setMaxBounds(northBounds);
-        // map.fitBounds(northBounds);
-
-        // State
         let isEditMode = false;
         let tempLatLng = null;
         let markers = [];
 
-        // Auth Check for Admin Controls
         const isAdmin = typeof Auth !== 'undefined' && Auth.isAdmin();
         if (isAdmin) {
             document.getElementById('adminControls').style.display = 'flex';
         }
 
-        // Render Markers
         function renderPins() {
-            // Clear existing
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
             mapPins.forEach((pin) => {
-                // Create Custom Building Icon
                 const buildingIcon = L.divIcon({
                     html: `<div class="building-marker"><i class="fas fa-building"></i></div>`,
                     iconSize: [40, 40],
@@ -627,7 +270,6 @@
 
                 const marker = L.marker([pin.lat, pin.lng], { icon: buildingIcon }).addTo(map);
 
-                // Voeg label toe met organisatienaam
                 marker.bindTooltip(pin.title, {
                     permanent: true,
                     direction: 'top',
@@ -635,19 +277,16 @@
                     className: 'marker-label'
                 });
 
-                // Popup Content
                 let popupContent = `
                     <div class="popup-header">${pin.title}</div>
                     <div class="popup-body">
                         <div style="font-size: 12px; color: #666;">${pin.description}</div>
-                        <a href="${pin.link}" class="popup-btn">Bekijk Functies</a>
+                        <a href="${pin.link}" class="rijk-btn rijk-btn-small mt-sm">Bekijk Functies</a>
                     </div>
                 `;
 
                 marker.bindPopup(popupContent, { className: 'custom-popup' });
-
-                // CLICK TO OPEN
-                marker.on('click', function() {
+                marker.on('click', function () {
                     this.openPopup();
                 });
 
@@ -655,16 +294,15 @@
             });
         }
 
-        // Modal Functions
         function closeModal() {
-            document.getElementById('addPinModal').style.display = 'none';
+            document.getElementById('addPinModal').classList.remove('active');
         }
 
         function savePin() {
             const functionSelect = document.getElementById('functionSelect');
             const functionId = functionSelect.value;
             const functionName = functionSelect.options[functionSelect.selectedIndex].text;
-            
+
             if (!tempLatLng) {
                 alert('Selecteer eerst een locatie op de kaart');
                 return;
@@ -683,26 +321,24 @@
                 mapPins.push(result);
                 renderPins();
                 closeModal();
-                document.getElementById('toast').style.display = 'block';
-                setTimeout(() => document.getElementById('toast').style.display = 'none', 3000);
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 3000);
             });
         }
 
-        // Edit Mode Toggle
-        document.getElementById('editModeToggle').addEventListener('change', function() {
+        document.getElementById('editModeToggle').addEventListener('change', function () {
             isEditMode = this.checked;
             document.body.classList.toggle('edit-mode', isEditMode);
         });
 
-        // Map Click Handler for Edit Mode
-        map.on('click', function(e) {
+        map.on('click', function (e) {
             if (isEditMode) {
                 tempLatLng = e.latlng;
-                document.getElementById('addPinModal').style.display = 'flex';
+                document.getElementById('addPinModal').classList.add('active');
             }
         });
 
-        // Populate Function Select
         function populateFunctionSelect() {
             const select = document.getElementById('functionSelect');
             Object.entries(functionsData).forEach(([id, func]) => {
@@ -713,7 +349,6 @@
             });
         }
 
-        // Initialize
         loadInitialData().then(() => {
             populateFunctionSelect();
             renderPins();

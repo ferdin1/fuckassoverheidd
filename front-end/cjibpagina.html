@@ -1,51 +1,88 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CJIB - Juridisch Assistent</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/cjib.css">
+    <link rel="stylesheet" href="css/rijkshuisstijl.css">
 </head>
-<body class="cjib-page">
-    <header class="top-header">
-        <h1>CJIB - Centraal Justitieel Incassobureau</h1>
-        <p>pagina 1 van 3</p>
-        <a href="kaart.html" class="back-to-map-btn">← Terug naar Kaart</a>
+
+<body>
+    <header class="rijk-top-bar">
+        <div class="rijk-header-top">
+            <a href="dashboard.html" class="rijk-logo-link">
+                <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
+                    alt="Rijksoverheid Logo" class="rijk-logo">
+                <span class="rijk-org-name">CJIB</span>
+                <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
+            </a>
+        </div>
+        <div class="rijk-header-nav">
+            <nav class="rijk-main-nav">
+                <a href="dashboard.html" class="rijk-nav-link">Home</a>
+                <a href="kaart.html" class="rijk-nav-link active">Kaart</a>
+                <a href="functies.html" class="rijk-nav-link">Functies</a>
+                <button class="rijk-nav-link">Menu</button>
+            </nav>
+            <div class="rijk-search-container">
+                <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
+                <button class="rijk-search-btn">🔍</button>
+            </div>
+            <div>
+                <a href="kaart.html" class="rijk-login-btn">← Terug naar Kaart</a>
+            </div>
+        </div>
     </header>
 
-    <main class="layout">
-        <aside class="left-menu">
-            <button>Juridisch Assistent<br><span>S8 | MBO+/HBO</span></button>
-            <button>Juridisch adviseur<br><span>S9 | HBO</span></button>
-            <button>Juridisch Adviseur<br><span>S9/10/11 | HBO/WO</span></button>
-            <button>Jurist<br><span>S9 | HBO</span></button>
-            <button>Senior Jurist<br><span>S11 | HBO/WO</span></button>
-        </aside>
+    <div class="rijk-container">
+        <div class="rijk-page-header">
+            <h1 class="rijk-page-title">CJIB - Centraal Justitieel Incassobureau</h1>
+            <p class="rijk-page-subtitle">pagina 1 van 3</p>
+        </div>
 
-        <section class="center-card">
-            <h2>Juridisch Assistent</h2>
-            <p>Je behandelt en ontwikkelt producten en diensten en voert daarmee het vastgestelde beleid uit.</p>
-            <p>Voor het behandelen van de zaken ben je goed in oordeelsvorming en beschik je over de nodige integriteit.</p>
-            <p>Klantgerichtheid, communicatie en samenwerken staan ook hoog in het vaandel bij deze functie.</p>
-        </section>
+        <div class="rijk-grid rijk-grid-3">
+            <div class="rijk-card">
+                <h3 class="rijk-card-title">Beschikbare Functies</h3>
+                <button class="rijk-btn mb-sm">Juridisch Assistent<br><small>S8 | MBO+/HBO</small></button>
+                <button class="rijk-btn mb-sm">Juridisch adviseur<br><small>S9 | HBO</small></button>
+                <button class="rijk-btn mb-sm">Juridisch Adviseur<br><small>S9/10/11 | HBO/WO</small></button>
+                <button class="rijk-btn mb-sm">Jurist<br><small>S9 | HBO</small></button>
+                <button class="rijk-btn">Senior Jurist<br><small>S11 | HBO/WO</small></button>
+            </div>
 
-        <aside class="right-panel">
-            <div class="info-box">
-                Lees <a href="https://werkenbijhetcjib.nl" target="_blank">hier</a> het interview met een medewerker
+            <div class="rijk-card rijk-card-accent">
+                <h2 class="rijk-card-title">Juridisch Assistent</h2>
+                <p class="rijk-card-text">Je behandelt en ontwikkelt producten en diensten en voert daarmee het
+                    vastgestelde beleid uit.</p>
+                <p class="rijk-card-text">Voor het behandelen van de zaken ben je goed in oordeelsvorming en beschik je
+                    over de nodige integriteit.</p>
+                <p class="rijk-card-text">Klantgerichtheid, communicatie en samenwerken staan ook hoog in het vaandel
+                    bij deze functie.</p>
             </div>
-            <div class="info-box">
-                Meer weten?<br>Klik <a href="https://werkenbijhetcjib.nl/vakgebieden/juridisch" target="_blank">hier</a> of scan de QR-code
-            </div>
-            <div class="qr-box">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://werkenbijhetcjib.nl/vakgebieden/juridisch" alt="QR-code CJIB" style="width:180px;height:180px;border-radius:12px;">
-            </div>
-        </aside>
-    </main>
 
-    <div class="bottom-nav">
-        <button>Naar CJIB Functieprofiel pagina 2</button>
-        <button>Naar CJIB Functieprofiel pagina 3</button>
+            <div class="rijk-card rijk-card-purple">
+                <h3 class="rijk-card-title">Meer informatie</h3>
+                <p class="rijk-card-text">
+                    Lees <a href="https://werkenbijhetcjib.nl" target="_blank" class="rijk-nav-link">hier</a> het
+                    interview met een medewerker
+                </p>
+                <p class="rijk-card-text">
+                    Meer weten?<br>Klik <a href="https://werkenbijhetcjib.nl/vakgebieden/juridisch" target="_blank"
+                        class="rijk-nav-link">hier</a> of scan de QR-code
+                </p>
+                <div class="text-center mt-md">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://werkenbijhetcjib.nl/vakgebieden/juridisch"
+                        alt="QR-code CJIB" class="rijk-card-icon">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-center flex-gap mt-xl">
+            <button class="rijk-btn">Naar CJIB Functieprofiel pagina 2</button>
+            <button class="rijk-btn">Naar CJIB Functieprofiel pagina 3</button>
+        </div>
     </div>
 </body>
+
 </html>
