@@ -122,7 +122,22 @@ p {
     width: 100%;
 }
 
-/* Top section: Logo + Ministry */
+/* Vervang de bestaande .rijk-header-top regel (regel 125-133) met: */
+
+.rijk-header-top {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* TOEGEVOEGD: centreert de content */
+    gap: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Of als u alleen het logo wilt centreren en de ministry tekst rechts wilt houden: */
+
 .rijk-header-top {
     width: 100%;
     max-width: 1400px;
@@ -134,6 +149,23 @@ p {
     border-bottom: 1px solid #e0e0e0;
 }
 
+.rijk-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: var(--rijk-text);
+    margin: 0 auto;  /* TOEGEVOEGD: centreert het logo */
+}
+
+.rijk-ministry {
+    position: absolute;
+    right: 20px;
+    font-size: 0.9rem;
+    color: #666;
+    padding-left: 15px;
+    border-left: 2px solid #ddd;
+}
 .rijk-logo-link {
     display: flex;
     align-items: center;
