@@ -61,12 +61,6 @@
                     <h3>Benodigdheden</h3>
                     <p id="cardBenodigd">Benodigdheden</p>
                 </div>
-                <div class="rijk-content-section">
-                    <h3>Locatie</h3>
-                    <p id="cardLocatie">
-                        <a href="#" id="cardLocatieLink" class="rijk-nav-link">📍 Bekijk op kaart</a>
-                    </p>
-                </div>
                 <div class="rijk-content-footer">
                     <span>Opleiding</span>
                     <span class="rijk-badge" id="cardOpleiding">MBO</span>
@@ -125,16 +119,16 @@
         // Data Layer (MySQL PHP API Integration)
         const API_URL = 'api';
         const defaultData = {
-            1: { titel: "Medewerker Administratie", beschrijving: "Verantwoordelijk voor het verwerken, controleren en bijhouden van administratieve en financiële gegevens binnen het CJIB.", benodigd: "MBO-diploma in administratieve richting. Basiskennis administratie, nauwkeurig werken en ervaring met computersystemen.", opleiding: "MBO", cursus: "Basisadministratie", vervolg_functie: "Junior Administratie", locatie: "CJIB Leeuwarden", lat: 53.2010, lng: 5.7985 },
-            2: { titel: "Juridisch Medewerker", beschrijving: "Ondersteunt bij juridische processen zoals het controleren van dossiers en het behandelen van bezwaren.", benodigd: "HBO-diploma in juridische richting. Kennis van wet- en regelgeving en ervaring met dossierbehandeling.", opleiding: "HBO", cursus: "Bestuursrecht Basis", vervolg_functie: "Rechtshulp Medewerker", locatie: "CJIB Leeuwarden", lat: 53.2010, lng: 5.7985 },
-            3: { titel: "Klantenservice Medewerker", beschrijving: "Beantwoordt vragen van burgers over boetes, betalingen en procedures.", benodigd: "MBO-diploma. Goede communicatieve vaardigheden en bij voorkeur ervaring in klantenservice.", opleiding: "MBO", cursus: "Communicatie & Klantcontact", vervolg_functie: "Callcenter Medewerker", locatie: "CJIB Leeuwarden", lat: 53.2010, lng: 5.7985 },
-            4: { titel: "Behandelaar Bezwaar", beschrijving: "Beoordeelt ingediende bezwaren en neemt beslissingen volgens vastgestelde regels.", benodigd: "HBO-diploma, bij voorkeur juridisch. Analytisch vermogen en ervaring met bezwaarprocedures.", opleiding: "HBO", cursus: "Bezwaarafhandeling", vervolg_functie: "Juridisch Medewerker", locatie: "Rechtbank Noord-Nederland", lat: 53.2008, lng: 5.7997 },
-            5: { titel: "Financieel Medewerker", beschrijving: "Beheert en controleert financiële transacties en betalingen.", benodigd: "MBO-diploma in financiële of administratieve richting. Cijfermatig inzicht en ervaring met financiële administratie.", opleiding: "MBO", cursus: "Financiële Verantwoording", vervolg_functie: "Financieel Assistent", locatie: "Belastingdienst Groningen", lat: 53.2129, lng: 6.5626 },
-            6: { titel: "ICT Support Medewerker", beschrijving: "Ondersteunt medewerkers bij technische problemen met systemen en software.", benodigd: "MBO-diploma ICT. Technisch inzicht en ervaring met computer- en softwaresupport.", opleiding: "MBO", cursus: "ITIL Foundation", vervolg_functie: "Technisch Support", locatie: "RDW Groningen", lat: 53.2600, lng: 6.6200 },
-            7: { titel: "Data Analist", beschrijving: "Analyseert gegevens om processen en prestaties inzichtelijk te maken.", benodigd: "HBO-diploma in data, ICT of economie. Ervaring met data-analyse en rapportages.", opleiding: "HBO", cursus: "SQL & Data Visualisatie", vervolg_functie: "Junior Data Analist", locatie: "DUO Groningen", lat: 53.2100, lng: 6.5600 },
-            8: { titel: "Teamleider", beschrijving: "Stuurt een team aan en bewaakt de kwaliteit en voortgang van het werk.", benodigd: "HBO-diploma. Leidinggevende ervaring en goede organisatorische vaardigheden.", opleiding: "HBO", cursus: "Leidinggeven & Coaching", vervolg_functie: "Senior Medewerker", locatie: "CJIB Leeuwarden", lat: 53.2010, lng: 5.7985 },
-            9: { titel: "Communicatie Medewerker", beschrijving: "Verzorgt interne en externe communicatie van de organisatie.", benodigd: "HBO-diploma communicatie of media. Ervaring met schrijven en communicatie is gewenst.", opleiding: "HBO", cursus: "Copywriting & Strategie", vervolg_functie: "Communicatie Assistent", locatie: "IND Groningen", lat: 53.2200, lng: 6.5800 },
-            10: { titel: "HR Medewerker", beschrijving: "Ondersteunt personeelszaken zoals administratie en begeleiding van medewerkers.", benodigd: "MBO-diploma HR of administratie. Ervaring met personeelsadministratie is een pré.", opleiding: "MBO", cursus: "Personeelsadministratie", vervolg_functie: "Administratief Medewerker", locatie: "RVO Drenthe", lat: 52.7000, lng: 6.5200 }
+            1: { titel: "Medewerker Administratie", beschrijving: "Verantwoordelijk voor het verwerken, controleren en bijhouden van administratieve en financiële gegevens binnen het CJIB.", benodigd: "MBO-diploma in administratieve richting. Basiskennis administratie, nauwkeurig werken en ervaring met computersystemen.", opleiding: "MBO", cursus: "Basisadministratie", vervolg_functie: "Junior Administratie" },
+            2: { titel: "Juridisch Medewerker", beschrijving: "Ondersteunt bij juridische processen zoals het controleren van dossiers en het behandelen van bezwaren.", benodigd: "HBO-diploma in juridische richting. Kennis van wet- en regelgeving en ervaring met dossierbehandeling.", opleiding: "HBO", cursus: "Bestuursrecht Basis", vervolg_functie: "Rechtshulp Medewerker" },
+            3: { titel: "Klantenservice Medewerker", beschrijving: "Beantwoordt vragen van burgers over boetes, betalingen en procedures.", benodigd: "MBO-diploma. Goede communicatieve vaardigheden en bij voorkeur ervaring in klantenservice.", opleiding: "MBO", cursus: "Communicatie & Klantcontact", vervolg_functie: "Callcenter Medewerker" },
+            4: { titel: "Behandelaar Bezwaar", beschrijving: "Beoordeelt ingediende bezwaren en neemt beslissingen volgens vastgestelde regels.", benodigd: "HBO-diploma, bij voorkeur juridisch. Analytisch vermogen en ervaring met bezwaarprocedures.", opleiding: "HBO", cursus: "Bezwaarafhandeling", vervolg_functie: "Juridisch Medewerker" },
+            5: { titel: "Financieel Medewerker", beschrijving: "Beheert en controleert financiële transacties en betalingen.", benodigd: "MBO-diploma in financiële of administratieve richting. Cijfermatig inzicht en ervaring met financiële administratie.", opleiding: "MBO", cursus: "Financiële Verantwoording", vervolg_functie: "Financieel Assistent" },
+            6: { titel: "ICT Support Medewerker", beschrijving: "Ondersteunt medewerkers bij technische problemen met systemen en software.", benodigd: "MBO-diploma ICT. Technisch inzicht en ervaring met computer- en softwaresupport.", opleiding: "MBO", cursus: "ITIL Foundation", vervolg_functie: "Technisch Support" },
+            7: { titel: "Data Analist", beschrijving: "Analyseert gegevens om processen en prestaties inzichtelijk te maken.", benodigd: "HBO-diploma in data, ICT of economie. Ervaring met data-analyse en rapportages.", opleiding: "HBO", cursus: "SQL & Data Visualisatie", vervolg_functie: "Junior Data Analist" },
+            8: { titel: "Teamleider", beschrijving: "Stuurt een team aan en bewaakt de kwaliteit en voortgang van het werk.", benodigd: "HBO-diploma. Leidinggevende ervaring en goede organisatorische vaardigheden.", opleiding: "HBO", cursus: "Leidinggeven & Coaching", vervolg_functie: "Senior Medewerker" },
+            9: { titel: "Communicatie Medewerker", beschrijving: "Verzorgt interne en externe communicatie van de organisatie.", benodigd: "HBO-diploma communicatie of media. Ervaring met schrijven en communicatie is gewenst.", opleiding: "HBO", cursus: "Copywriting & Strategie", vervolg_functie: "Communicatie Assistent" },
+            10: { titel: "HR Medewerker", beschrijving: "Ondersteunt personeelszaken zoals administratie en begeleiding van medewerkers.", benodigd: "MBO-diploma HR of administratie. Ervaring met personeelsadministratie is een pré.", opleiding: "MBO", cursus: "Personeelsadministratie", vervolg_functie: "Administratief Medewerker" }
         };
 
         let functies = { ...defaultData };
@@ -246,19 +240,6 @@
             document.getElementById('cardDesc').textContent = f.beschrijving;
             document.getElementById('cardBenodigd').textContent = f.benodigd;
             document.getElementById('cardOpleiding').textContent = f.opleiding;
-
-            // Locatie tonen met link naar kaart
-            const locatieElement = document.getElementById('cardLocatie');
-            const locatieLink = document.getElementById('cardLocatieLink');
-
-            if (f.locatie && f.lat && f.lng) {
-                locatieElement.innerHTML = `<strong>${f.locatie}</strong><br>`;
-                locatieLink.href = `kaart.html?lat=${f.lat}&lng=${f.lng}&zoom=15`;
-                locatieLink.textContent = `📍 Bekijk ${f.locatie} op kaart`;
-                locatieElement.appendChild(locatieLink);
-            } else {
-                locatieElement.innerHTML = '<em>Locatie niet beschikbaar</em>';
-            }
 
             localStorage.setItem('routeplanner_selection', JSON.stringify({
                 type: 'full',
