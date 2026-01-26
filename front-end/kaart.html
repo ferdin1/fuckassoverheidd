@@ -76,6 +76,11 @@
             padding: 15px;
             background: white;
         }
+
+        /* AANGEPAST: Witte tekst voor de Bekijk Functies knop */
+        .popup-body .rijk-btn {
+            color: white !important;
+        }
     </style>
 </head>
 
@@ -135,14 +140,7 @@
                         functies</div>
                 </div>
             </div>
-            <button class="rijk-map-toggle-btn" onclick="toggleMoreInfo()">ℹ️ Meer informatie</button>
-            <div class="rijk-map-extra-info" id="extraInfo">
-                <p><strong>Over deze kaart:</strong> Op deze kaart vind je alle rijksorganisaties die actief zijn in
-                    Noord-Nederland (Groningen, Friesland en Drenthe).</p>
-                <p><strong>Beschikbare functies:</strong> Elke organisatie biedt verschillende functies en diensten aan.
-                    Kijk welke functies beschikbaar zijn voor jouw locatie.</p>
-                <p><strong>Contact:</strong> Voor vragen kun je contact opnemen met de specifieke organisatie via hun
-                    website.</p>
+           
             </div>
         </div>
     </div>
@@ -161,7 +159,7 @@
         </div>
     </div>
 
-    <div id="toast" class="rijk-message rijk-message-success">Pin succesvol toegevoegd!</div>
+    
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script>
