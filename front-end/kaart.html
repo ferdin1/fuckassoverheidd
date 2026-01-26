@@ -358,5 +358,55 @@
     </script>
 
 </body>
+ <script src="../back-end/javascript/auth.js"></script>
+    <script>
+        // LOGIN MODAL FUNCTIONALITY
+        const loginLink = document.getElementById('loginLink');
+        const loginModal = document.getElementById('loginModal');
+        const loginForm = document.getElementById('dashboardLoginForm');
+        const statusMsg = document.getElementById('dashboardLoginStatus');
 
+        // Open modal on login link click
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const user = typeof Auth !== 'undefined' && Auth.getUser ? Auth.getUser() : null;
+            if (!user) {
+                loginModal.classList.add('active');
+            }
+        });
+
+        // Close modal on outside click
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+            }
+        });
+
+        // Handle form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('dashboardUsername').value;
+            const password = document.getElementById('dashboardPassword').value;
+
+            if (typeof Auth !== 'undefined' && Auth.login) {
+                const result = await Auth.login(username, password);
+                if (result.success) {
+                    statusMsg.textContent = 'Inloggen succesvol! Dashboard wordt vernieuwd...';
+                    statusMsg.className = 'rijk-message rijk-message-success';
+                    statusMsg.style.display = 'block';
+                    setTimeout(() => {
+                        loginModal.classList.remove('active');
+                        location.reload();
+                    }, 1500);
+                } else {
+                    statusMsg.textContent = result.message || 'Inloggen mislukt';
+                    statusMsg.className = 'rijk-message rijk-message-error';
+                    statusMsg.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
 </html>
