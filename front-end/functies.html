@@ -14,7 +14,7 @@
             <a href="dashboard.html" class="rijk-logo-link">
                 <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
                     alt="Rijksoverheid Logo" class="rijk-logo">
-               
+
                 <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
             </a>
         </div>
@@ -23,9 +23,8 @@
                 <a href="dashboard.html" class="rijk-nav-link">Home</a>
                 <a href="kaart.html" class="rijk-nav-link">Kaart</a>
                 <a href="functies.html" class="rijk-nav-link active">Functies</a>
-             <button class="rijk-nav-link"
-                    onclick="window.open('https://www.rijksoverheid.nl/')">Over ons</button>
-              
+                <button class="rijk-nav-link" onclick="window.open('https://www.rijksoverheid.nl/')">Over ons</button>
+
             </nav>
             <div class="rijk-search-container">
                 <input type="search" class="rijk-search-input" placeholder="Waar bent u naar op zoek?">
@@ -37,7 +36,7 @@
             </div>
         </div>
     </header>
-    <script src="auth.js"></script>
+    <script src="../back-end/javascript/auth.js"></script>
 
     <div class="rijk-functies-layout">
         <div class="rijk-sidebar">
@@ -117,7 +116,7 @@
 
     <script>
         // Data Layer (MySQL PHP API Integration)
-        const API_URL = 'api';
+        const API_URL = '../api';
         const defaultData = {
             1: { titel: "Medewerker Administratie", beschrijving: "Verantwoordelijk voor het verwerken, controleren en bijhouden van administratieve en financiële gegevens binnen het CJIB.", benodigd: "MBO-diploma in administratieve richting. Basiskennis administratie, nauwkeurig werken en ervaring met computersystemen.", opleiding: "MBO", cursus: "Basisadministratie", vervolg_functie: "Junior Administratie" },
             2: { titel: "Juridisch Medewerker", beschrijving: "Ondersteunt bij juridische processen zoals het controleren van dossiers en het behandelen van bezwaren.", benodigd: "HBO-diploma in juridische richting. Kennis van wet- en regelgeving en ervaring met dossierbehandeling.", opleiding: "HBO", cursus: "Bestuursrecht Basis", vervolg_functie: "Rechtshulp Medewerker" },
@@ -154,16 +153,24 @@
         }
 
         async function saveFunctieToDB(data, id = null) {
-            const url = id ? `${API_URL}/functies.php?id=${id}` : `${API_URL}/functies.php`;
+            // Include ID in data if updating
+            if (id) {
+                data.id = id;
+            }
+
+            const url = `${API_URL}/functies.php`;
+            const method = id ? 'PUT' : 'POST';
+
             try {
                 const res = await fetch(url, {
-                    method: 'POST',
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
                 return await res.json();
             } catch (err) {
                 console.error("Functie kon niet worden opgeslagen:", err);
+                return { success: false, message: err.message };
             }
         }
 
@@ -219,14 +226,37 @@
             }
         });
 
-        function deleteFunctie(id, event) {
+        async function deleteFunctie(id, event) {
             event.stopPropagation();
             if (confirm('Weet je zeker dat je deze functie wilt verwijderen?')) {
-                delete functies[id];
-                save();
-                render();
-                if (Object.keys(functies).length > 0) {
-                    document.querySelector('.rijk-function-item').click();
+                try {
+                    const res = await fetch(`${API_URL}/functies.php?id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    const result = await res.json();
+
+                    if (result.success) {
+                        delete functies[id];
+                        // save(); // LocalStorage save might not be needed if we rely on DB, but keeping it for sync? 
+                        // Actually, let's reload or just remove locally.
+                        render();
+                        if (Object.keys(functies).length > 0) {
+                            const firstId = Object.keys(functies)[0];
+                            // Simulate click on first item if available, or just clear view
+                            if (firstId) {
+                                document.querySelector(`.rijk-function-item`)?.click();
+                            }
+                        } else {
+                            // Clear details view if empty
+                            document.getElementById('cardTitle').textContent = 'Titel';
+                            document.getElementById('cardDesc').textContent = 'Beschrijving';
+                        }
+                    } else {
+                        alert('Fout bij verwijderen: ' + result.message);
+                    }
+                } catch (err) {
+                    console.error('Delete error:', err);
+                    alert('Kon functie niet verwijderen.');
                 }
             }
         }
@@ -340,13 +370,21 @@
 
             const result = await saveFunctieToDB(data, editingId);
 
-            if (editingId) {
-                functies[editingId] = data;
-                alert('Functie bijgewerkt!');
+            if (result.success) {
+                if (editingId) {
+                    functies[editingId] = data;
+                    alert('Functie bijgewerkt!');
+                } else {
+                    const newId = result.id;
+                    // Add ID to data for local list
+                    data.id = newId;
+                    // Wait, functies is keyed by ID. 
+                    functies[newId] = data;
+                    alert('Functie toegevoegd!');
+                }
             } else {
-                const newId = result.id || Date.now();
-                functies[newId] = data;
-                alert('Functie toegevoegd!');
+                alert('Fout bij opslaan: ' + (result.message || 'Onbekende fout'));
+                return; // Stop here if failed
             }
 
             save();

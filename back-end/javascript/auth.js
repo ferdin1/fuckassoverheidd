@@ -11,20 +11,20 @@ const Auth = {
     login: async function (username, password) {
         try {
             // TEST MODE: Check tegen lokale accounts
-            if (this.TEST_ACCOUNTS[username]) {
-                if (this.TEST_ACCOUNTS[username].password === password) {
-                    const user = {
-                        username: username,
-                        role: this.TEST_ACCOUNTS[username].role,
-                        isLoggedIn: true
-                    };
-                    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-                    console.log('✅ Test login succesvol!');
-                    return { success: true, user };
-                } else {
-                    return { success: false, message: "Wachtwoord onjuist" };
-                }
-            }
+            // if (this.TEST_ACCOUNTS[username]) {
+            //     if (this.TEST_ACCOUNTS[username].password === password) {
+            //         const user = {
+            //             username: username,
+            //             role: this.TEST_ACCOUNTS[username].role,
+            //             isLoggedIn: true
+            //         };
+            //         localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+            //         console.log('✅ Test login succesvol!');
+            //         return { success: true, user };
+            //     } else {
+            //         return { success: false, message: "Wachtwoord onjuist" };
+            //     }
+            // }
 
             // NORMALE MODE: Probeer database
             const res = await fetch(`${this.API_URL}/login.php`, {
@@ -53,14 +53,13 @@ const Auth = {
 
     register: async function (username, password) {
         try {
-            // TEST MODE: Voeg toe aan lokale accounts
-            if (!this.TEST_ACCOUNTS[username]) {
-                this.TEST_ACCOUNTS[username] = { password: password, role: 'user' };
-                console.log('✅ Test account aangemaakt!');
-                return { success: true, message: "Account aangemaakt!" };
-            } else {
-                return { success: false, message: "Gebruikersnaam is al bezet" };
-            }
+            // NORMALE MODE: Registreer via API
+            const res = await fetch(`${this.API_URL}/register.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            return await res.json();
         } catch (err) {
             console.error("Register Error:", err);
             return { success: false, message: "Registratie mislukt" };
