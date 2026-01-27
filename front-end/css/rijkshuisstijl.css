@@ -145,7 +145,7 @@ p {
 }
 
 .rijk-logo {
-    height: 120px;
+    height: 80px;
     width: auto;
     object-fit: contain;
 }
@@ -167,7 +167,7 @@ p {
 
 /* Navigation section */
 .rijk-header-nav {
-    width: 200%;
+    width: 100%;
     max-width: 1400px;
     margin: 0 auto;
     padding: 12px 20px;
@@ -396,9 +396,19 @@ p {
 }
 
 .rijk-btn-outline {
+    display: inline-block;
     background-color: transparent;
     border: 2px solid var(--rijk-blue);
     color: var(--rijk-blue);
+    padding: 12px 24px;
+    border-radius: var(--radius-button);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    font-family: var(--rijk-font-text);
 }
 
 .rijk-btn-outline:hover {
