@@ -1,21 +1,45 @@
 <!DOCTYPE html>
 <html lang="nl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CJIB Functies</title>
     <link rel="stylesheet" href="css/rijkshuisstijl.css">
+    <style>
+        /* alleen styling voor de pagina-switch */
+        .page-switch {
+            display: inline-flex;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 2px solid #004699;
+            background: #fff;
+            margin-top: 8px;
+        }
+        .page-switch button {
+            border: none;
+            padding: 6px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            background: transparent;
+            color: #004699;
+            transition: background 0.2s, color 0.2s;
+        }
+        .page-switch button.active {
+            background: #004699;
+            color: #fff;
+        }
+        .page-switch button:not(:last-child) {
+            border-right: 1px solid #004699;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- HEADER (ONGEWIJZIGD) -->
 <header class="rijk-top-bar">
     <div class="rijk-header-top">
         <a href="dashboard.html" class="rijk-logo-link">
             <img src="https://www.rijkshuisstijl.nl/publiek/general/filestreamer.ashx?d=vePBKGSkhy7hArZX2fPnf67BDM1fdkK%2B22LcON6gT80KUVyGS%2Fw1GGkIgB2LbnNfAa77kkFAGIPKK5Ll7A0Vp1X8BPrR%2FBHYwrYEdKpPX0ADg1F7Pu5vAfJ6VS4Bfl%2FXypjYJVLFt5eALy3vNueZGI5YAjdAF%2FSyy9cCYK4Ck91pjXT7KzerH3%2BkJpLxkmZ%2F6OPSkTN4WqfVbx68D1eFTOb7kil7Ka9AjS0J%2BPcL19DojCVnYR4PgeS6J2BGk%2FLaa7j%2B88BAel7x1W4jbKD5KEf%2Bu6TQdVuSMWuinTiOW7cPgSGSfmipO2Dq3VnXYBHm1nWBtPDHn3YlpZWu7fSFD4bd5t%2B2jMIUN81yTvThr%2BQ%3D"
-                alt="Rijksoverheid Logo" class="rijk-logo">
+                 alt="Rijksoverheid Logo" class="rijk-logo">
             <span class="rijk-org-name">CJIB</span>
             <span class="rijk-ministry">Ministerie van Justitie en Veiligheid</span>
         </a>
@@ -31,24 +55,24 @@
     </div>
 </header>
 
-<!-- CONTENT -->
 <div class="rijk-container">
 
     <div class="rijk-page-header">
         <h1 class="rijk-page-title">CJIB - Centraal Justitieel Incassobureau</h1>
-        <p class="rijk-page-subtitle">pagina 1 van 3</p>
+        <p class="rijk-page-subtitle" id="paginakop">pagina 1 van 3</p>
+
+        <!-- mooie switch-knop voor pagina 1/2/3 -->
+        <div class="page-switch">
+            <button type="button" id="btn-p1" class="active" onclick="veranderPagina(1)">1</button>
+            <button type="button" id="btn-p2" onclick="veranderPagina(2)">2</button>
+            <button type="button" id="btn-p3" onclick="veranderPagina(3)">3</button>
+        </div>
     </div>
 
     <div class="rijk-grid rijk-grid-3">
 
-        <!-- LINKS: FUNCTIES -->
-        <div class="rijk-card">
-            <button class="rijk-btn mb-sm" onclick="selecteer('assistent')">Juridisch Assistent<br><small>S8 | MBO+/HBO</small></button>
-            <button class="rijk-btn mb-sm" onclick="selecteer('adviseur')">Juridisch adviseur<br><small>S9 | HBO</small></button>
-            <button class="rijk-btn mb-sm" onclick="selecteer('senioradviseur')">Juridisch Adviseur<br><small>S9/10/11 | HBO/WO</small></button>
-            <button class="rijk-btn mb-sm" onclick="selecteer('jurist')">Jurist<br><small>S9 | HBO</small></button>
-            <button class="rijk-btn" onclick="selecteer('seniorjurist')">Senior Jurist<br><small>S11 | HBO/WO</small></button>
-        </div>
+        <!-- LINKS: knoppen (ALTJD onder elkaar, maar inhoud wisselt per pagina) -->
+        <div class="rijk-card" id="knoppen"></div>
 
         <!-- MIDDEN: OMSCHRIJVING -->
         <div class="rijk-card rijk-card-accent">
@@ -69,21 +93,21 @@
                 Klik <a id="meerInfoLink" target="_blank">hier</a> of scan de QR-code
             </p>
             <div class="text-center mt-md">
-                <img id="qr" width="180">
+                <img id="qr" width="180" alt="QR-code naar meer informatie">
             </div>
         </div>
 
     </div>
 
-    <div class="flex-center flex-gap mt-xl">
-        <button class="rijk-btn">Naar CJIB Functieprofiel pagina 2</button>
-        <button class="rijk-btn">Naar CJIB Functieprofiel pagina 3</button>
-    </div>
 </div>
 
 <script>
 const data = {
+    /* pagina 1 */
     assistent: {
+        groep: 1,
+        label: "Juridisch Assistent",
+        schaal: "S8 | MBO+/HBO",
         titel: "Juridisch Assistent",
         tekst: [
             "Je behandelt en ontwikkelt producten en diensten.",
@@ -93,6 +117,9 @@ const data = {
         link: "https://werkenbijhetcjib.nl/vakgebieden/juridisch"
     },
     adviseur: {
+        groep: 1,
+        label: "Juridisch Adviseur",
+        schaal: "S9 | HBO",
         titel: "Juridisch Adviseur",
         tekst: [
             "Je adviseert over juridische vraagstukken.",
@@ -102,6 +129,9 @@ const data = {
         link: "https://werkenbijhetcjib.nl"
     },
     senioradviseur: {
+        groep: 1,
+        label: "Juridisch Adviseur (Senior)",
+        schaal: "S9/10/11 | HBO/WO",
         titel: "Juridisch Adviseur (Senior)",
         tekst: [
             "Je behandelt complexe juridische zaken.",
@@ -111,39 +141,200 @@ const data = {
         link: "https://werkenbijhetcjib.nl"
     },
     jurist: {
+        groep: 1,
+        label: "Jurist",
+        schaal: "S9 | HBO",
         titel: "Jurist",
         tekst: [
             "Je beoordeelt dossiers juridisch.",
             "Je stelt besluiten en adviezen op.",
             "Je werkt nauwkeurig en zelfstandig."
         ],
-        link: "https://werkenbijhetcjib.nl"
+        link: "https://werkenbijhetcjib.nl/vakgebieden/juridisch"
     },
     seniorjurist: {
+        groep: 1,
+        label: "Senior Jurist",
+        schaal: "S11 | HBO/WO",
         titel: "Senior Jurist",
         tekst: [
             "Je behandelt complexe dossiers.",
             "Je bent inhoudelijk aanspreekpunt.",
-            "Je bewaakt juridische kwaliteit."
+            "Je bewaakt de juridische kwaliteit."
+        ],
+        link: "https://werkenbijhetcjib.nl/vakgebieden/juridisch"
+    },
+
+    /* pagina 2 */
+    jurbeleid: {
+        groep: 2,
+        label: "Juridisch Beleidsadviseur",
+        schaal: "S12 | WO",
+        titel: "Juridisch Beleidsadviseur",
+        tekst: [
+            "Je ontwikkelt en vertaalt nieuwe wet- en regelgeving naar beleid.",
+            "Je adviseert het management over juridische en beleidsmatige vraagstukken.",
+            "Je stemt af met ministeries en ketenpartners."
+        ],
+        link: "https://werkenbijhetcjib.nl/vakgebieden/juridisch"
+    },
+    jurbeleidcfv: {
+        groep: 2,
+        label: "Juridisch Beleidsadviseur CFV",
+        schaal: "S12 | WO",
+        titel: "Juridisch Beleidsadviseur CFV",
+        tekst: [
+            "Je werkt aan beleid op het gebied van financiële en executievraagstukken.",
+            "Je analyseert effecten van beleid en doet verbetervoorstellen.",
+            "Je werkt intensief samen met interne en externe partners."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    seniorjurbeleid: {
+        groep: 2,
+        label: "Senior Juridisch Beleidsadviseur",
+        schaal: "S13 | WO",
+        titel: "Senior Juridisch Beleidsadviseur",
+        tekst: [
+            "Je stuurt inhoudelijk op complexe beleidsdossiers.",
+            "Je hebt een voortrekkersrol bij strategische ontwikkelingen.",
+            "Je vertegenwoordigt het CJIB in externe overleggen."
+        ],
+        link: "https://werkenbijhetcjib.nl/vakgebieden/juridisch"
+    },
+    advjurkwaliteit: {
+        groep: 2,
+        label: "Adviseur Juridische kwaliteit",
+        schaal: "S11 | HBO/WO",
+        titel: "Adviseur Juridische kwaliteit",
+        tekst: [
+            "Je bewaakt de kwaliteit van juridische processen en producten.",
+            "Je signaleert risico’s en doet verbetervoorstellen.",
+            "Je ondersteunt collega’s bij juridische vraagstukken."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    senioradvjurkwaliteit: {
+        groep: 2,
+        label: "Senior Adviseur Juridische kwaliteit",
+        schaal: "S12 | WO",
+        titel: "Senior Adviseur Juridische kwaliteit",
+        tekst: [
+            "Je geeft richting aan de ontwikkeling van juridische kwaliteit.",
+            "Je pakt complexe verbetertrajecten op.",
+            "Je fungeert als sparringpartner voor management en collega’s."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+
+    /* pagina 3 */
+    procesregisseur10: {
+        groep: 3,
+        label: "Procesregisseur",
+        schaal: "S10 | HBO",
+        titel: "Procesregisseur",
+        tekst: [
+            "Je regisseert het gehele proces rond een dossier of klantreis.",
+            "Je bewaakt voortgang, kwaliteit en doorlooptijden.",
+            "Je schakelt met ketenpartners en stuurt op resultaat."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    procesregisseur11: {
+        groep: 3,
+        label: "Procesregisseur",
+        schaal: "S11 | HBO/WO",
+        titel: "Procesregisseur",
+        tekst: [
+            "Je stuurt op complexe processen met meerdere betrokken partijen.",
+            "Je signaleert knelpunten en initieert verbeteringen.",
+            "Je hebt een belangrijke rol in de afstemming met de keten."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    zaakregisseur: {
+        groep: 3,
+        label: "Zaakregisseur",
+        schaal: "S12 | WO",
+        titel: "Zaakregisseur",
+        tekst: [
+            "Je bent eindverantwoordelijk voor de afhandeling van complexe zaken.",
+            "Je stemt af met interne specialisten en externe partners.",
+            "Je bewaakt integraliteit, voortgang en kwaliteit van de zaak."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    beoordelaarhoge: {
+        groep: 3,
+        label: "Beoordelaar Hoge en/of Gevoelige Geldelijke Strafzaken",
+        schaal: "S9 | HBO",
+        titel: "Beoordelaar Hoge en/of Gevoelige Geldelijke Strafzaken",
+        tekst: [
+            "Je beoordeelt hoge en gevoelige geldelijke strafzaken inhoudelijk.",
+            "Je weegt belangen zorgvuldig af en motiveert besluiten helder.",
+            "Je werkt nauw samen met ketenpartners binnen het strafrecht."
+        ],
+        link: "https://werkenbijhetcjib.nl"
+    },
+    regiocoordinator: {
+        groep: 3,
+        label: "Regiocoördinator",
+        schaal: "S11 | HBO",
+        titel: "Regiocoördinator",
+        tekst: [
+            "Je coördineert de werkzaamheden binnen een regio.",
+            "Je onderhoudt contacten met lokale partners in de strafrechtketen.",
+            "Je bewaakt uniformiteit en kwaliteit van de uitvoering."
         ],
         link: "https://werkenbijhetcjib.nl"
     }
 };
 
+function bouwKnoppen(pagina) {
+    const container = document.getElementById("knoppen");
+    container.innerHTML = "";
+    const entries = Object.entries(data).filter(([k, f]) => f.groep === pagina);
+
+    entries.forEach(([key, f]) => {
+        const btn = document.createElement("button");
+        btn.className = "rijk-btn mb-sm";
+        btn.innerHTML = f.label + "<br><small>" + f.schaal + "</small>";
+        btn.onclick = () => selecteer(key);
+        container.appendChild(btn);
+    });
+
+    if (entries.length > 0) {
+        selecteer(entries[0][0]);
+    }
+}
+
 function selecteer(key) {
     const f = data[key];
+    if (!f) return;
+
     document.getElementById("titel").innerText = f.titel;
-    document.getElementById("tekst1").innerText = f.tekst[0];
-    document.getElementById("tekst2").innerText = f.tekst[1];
-    document.getElementById("tekst3").innerText = f.tekst[2];
+    document.getElementById("tekst1").innerText = f.tekst[0] || "";
+    document.getElementById("tekst2").innerText = f.tekst[1] || "";
+    document.getElementById("tekst3").innerText = f.tekst[2] || "";
 
     document.getElementById("interviewLink").href = f.link;
     document.getElementById("meerInfoLink").href = f.link;
     document.getElementById("qr").src =
-        "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + f.link;
+        "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+        encodeURIComponent(f.link);
 }
 
-selecteer("assistent");
+function veranderPagina(pagina) {
+    document.getElementById("paginakop").innerText = "pagina " + pagina + " van 3";
+    // active knop stylen
+    document.getElementById("btn-p1").classList.toggle("active", pagina === 1);
+    document.getElementById("btn-p2").classList.toggle("active", pagina === 2);
+    document.getElementById("btn-p3").classList.toggle("active", pagina === 3);
+    bouwKnoppen(pagina);
+}
+
+// start met pagina 1
+veranderPagina(1);
 </script>
 
 </body>
